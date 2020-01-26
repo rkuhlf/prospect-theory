@@ -10,14 +10,22 @@ class Calculator extends Component {
       gainProbabilityWeighting: 0.61, // gamma
       lossProbabilityWeighting: 0.69, // delta
       showSettings: false,
-      results: [10],
-      probabilities: [5]
-    }
+      prospects: [{
+        result: 10,
+        probability: 5,
+        weightedProbability: 0,
+        weightedValue: 0
+      }]
+    } // refactor all of these arrays into an array of objects
 
     this.handleChange = this.handleChange.bind(this);
     this.toggleSettings = this.toggleSettings.bind(this);
     this.addResult = this.addResult.bind(this);
     this.dataInput = this.dataInput.bind(this);
+  }
+
+  componentDidMount() {
+    this.recalculateState();
   }
 
   // Math
@@ -30,7 +38,7 @@ class Calculator extends Component {
   }
 
   negativeWeighting(p) {
-    let delta = this.state.gainProbabilityWeighting;
+    let delta = this.state.lossProbabilityWeighting;
     const numerator = Math.pow(p, delta);
     const denominator = Math.pow(numerator + Math.pow(1-p, delta), 1/delta);
 
@@ -77,13 +85,12 @@ class Calculator extends Component {
   }
 
   handleChange(e, variable) {
-    console.log(e);
     this.setState(prevState => {
       let newState = {};
       newState[variable] = e.target.value;
 
       return newState;
-    });
+    }, this.recalculateState);
   }
 
   decimalInput(name) {
@@ -92,21 +99,27 @@ class Calculator extends Component {
     );
   }
 
-  handleIndexedChange(e, variable, index) {
+  resultIndexedInput(name, index, name2) {
+    console.log("result", this.state[name][index])
+    return (
+      <input className="form-control" type="text" value={this.state[name][index][name2]} readOnly />
+    );
+  }
+
+  handleIndexedChange(e, variable, index, name2) {
     e.preventDefault(); // not stopping refresh
-    console.log(e);
     this.setState(prevState => {
       let newState = {};
       newState[variable] = prevState[variable];
-      newState[variable][index] = e.target.value;
+      newState[variable][index][name2] = e.target.value;
 
       return newState;
-    });
+    }, this.recalculateState);
   }
 
-  indexedDecimalInput(name, index) {
+  indexedDecimalInput(name, index, name2) {
     return (
-      <input type="number" onChange={e => this.handleIndexedChange(e.nativeEvent, name, index)} value={this.state[name][index]} step="0.01" className="form-control" />
+      <input type="number" onChange={e => this.handleIndexedChange(e.nativeEvent, name, index, name2)} value={this.state[name][index][name2]} step="0.01" className="form-control" />
     );
   }
 
@@ -117,6 +130,7 @@ class Calculator extends Component {
   }
 
   addResult() {
+    // refactor this
     this.setState(prevState => {
       let newResults = prevState.results;
       newResults.push(0);
@@ -124,18 +138,43 @@ class Calculator extends Component {
       newProbabilities.push(0);
 
       return {
-        probabilities: newProbabilities
+        probabilities: newProbabilities,
+        results: newResults
       }
-    });
+    }, this.recalculateState);
   }
 
-  componentWillMount() {
+  recalculateState() {
     // This for regular prospects
     // calculate and show:
     // weighted probabilities
     // values recieved from value functions
     // what they are multiplied together
     // what the sum of all of the multiplied is
+
+    let prospects = [...this.state.prospects];
+    console.log("Calculating state", prospects);
+  
+    for (let i = 0; i < prospects.length; i++) {
+      if (prospects[i].result > 0) {
+        
+        const weightedProb = this.positiveWeighting(prospects[i].probability / 100);
+        prospects[i].weightedProbability = weightedProb;
+      } else if (prospects[i].result < 0) {
+        const weightedProb = this.negativeWeighting(prospects[i].probability / 100);
+        prospects[i].weightedProbability = weightedProb;
+      } else {
+        prospects[i].weightedProbability = 0;
+      }
+
+      prospects[i].weightedValue = this.valueFunction(prospects[i].result);
+    }
+
+    console.log("finished calculating", prospects);
+
+    this.setState({
+      prospects
+    });
   }
 
   dataInput() {
@@ -143,13 +182,13 @@ class Calculator extends Component {
       <div className="mb-3">
         <form onSubmit={e => e.preventDefault()}>
           {
-            this.state.results.map((item, index) => (
+            this.state.prospects.map((item, index) => (
               <div className="form-group row">
                 <div className="col-sm">
                   <div className="row">
                     <label className="col-4 col-form-label">Result</label>
                     <div className="col-8">
-                      {this.indexedDecimalInput("results", index)}
+                      {this.indexedDecimalInput("prospects", index, "result")}
                     </div>
                   </div>
                 </div>
@@ -157,7 +196,23 @@ class Calculator extends Component {
                   <div className="row">
                     <label className="col-4 col-form-label">Probability</label>
                     <div className="col-8">
-                      {this.indexedDecimalInput("probabilities", index)}
+                      {this.indexedDecimalInput("prospects", index, "probability")}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-sm">
+                  <div className="row">
+                    <label className="col-4 col-form-label">Weighted Probability</label>
+                    <div className="col-8">
+                      {this.resultIndexedInput("prospects", index, "weightedProbability")}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-sm">
+                  <div className="row">
+                    <label className="col-4 col-form-label">Weighted Value</label>
+                    <div className="col-8">
+                      {this.resultIndexedInput("prospects", index, "weightedValue")}
                     </div>
                   </div>
                 </div>
