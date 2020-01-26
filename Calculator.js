@@ -42,7 +42,6 @@ class Calculator extends Component {
     const numerator = Math.pow(p, gamma);
     const denominator = Math.pow(numerator + Math.pow(1-p, gamma), 1/gamma);
 
-    console.log(numerator/denominator);
     return numerator/denominator;
   }
 
@@ -180,12 +179,11 @@ class Calculator extends Component {
   recalculateState() {
     this.assignIDs();
 
-    // This for regular prospects
-    // calculate and show:
-    // weighted probabilities
-    // values recieved from value functions
-    // what they are multiplied together
-    // what the sum of all of the multiplied is
+    // add a thing that makes sure the sum of the probabilities is one
+    // find the sum
+    // if less than 100
+    // prospects.push(new prospect to make it one)
+    // delete it at the end (make it have id 0)
 
     let prospects = [...this.state.prospects];
     prospects.sort((p1, p2) => {
@@ -250,45 +248,47 @@ class Calculator extends Component {
   }
 
   dataInput() {
+    const labelClasses = classNames("col-4 overflow-hidden text-nowrap col-sm-12 col-lg-4".split(" "))
+    const inputClasses = classNames("col-8 col-sm-12 col-lg-8".split(" "))
     return (
       <div className="mb-3">
-        <form onSubmit={e => e.preventDefault()}>
+        <form className="container" onSubmit={e => e.preventDefault()}>
           {
             this.state.prospects.map((item, index) => (
-              <div className="form-group row">
-                <div className="col-sm">
-                  <div className="row">
-                    <label className="col-4 col-sm-12 col-lg-4">Result</label>
-                    <div className="col-8 col-sm-12 col-lg-8">
+              <div className="form-group row mb-5">
+                <div className="col-md">
+                  <div className="row pb-2 pb-sm-0">
+                    <label className={labelClasses}>Result</label>
+                    <div className={inputClasses}>
                       {this.indexedDecimalInput("prospects", index, "result")}
                     </div>
                   </div>
                 </div>
-                <div className="col-sm">
-                  <div className="row">
-                    <label className="col-4 col-sm-12 col-lg-4">Probability</label>
-                    <div className="col-8 col-sm-12 col-lg-8">
+                <div className="col-md">
+                  <div className="row pb-2 pb-sm-0">
+                    <label className={labelClasses}>Probability</label>
+                    <div className={inputClasses}>
                       {this.indexedDecimalInput("prospects", index, "probability")}
                     </div>
                   </div>
                 </div>
-                <div className="col-sm">
-                  <div className="row">
-                    <label className="col-4 col-sm-12 col-lg-4">Weighted Probability</label>
-                    <div className="col-8 col-sm-12 col-lg-8">
+                <div className="col-md">
+                  <div className="row pb-2 pb-sm-0">
+                    <label className={labelClasses}>Weighted Probability</label>
+                    <div className={inputClasses}>
                       {this.resultIndexedInput("prospects", index, "weightedProbability")}
                     </div>
                   </div>
                 </div>
-                <div className="col-sm">
-                  <div className="row">
-                    <label className="col-4 col-sm-12 col-lg-4">Weighted Value</label>
-                    <div className="col-8 col-sm-12 col-lg-8">
+                <div className="col-md">
+                  <div className="row pb-2 pb-sm-0">
+                    <label className={labelClasses}>Weighted Value</label>
+                    <div className={inputClasses}>
                       {this.resultIndexedInput("prospects", index, "weightedValue")}
                     </div>
                   </div>
                 </div>
-                <div className="col-sm">
+                <div className="col-md my-sm-3 my-lg-0">
                   <div onClick={() => this.deleteProspect(index)} className="btn btn-danger">
                     Delete
                   </div>
@@ -301,7 +301,11 @@ class Calculator extends Component {
         </form>
       </div>
     );
-  }
+  } // make weighted only appear on lg screens
+  // display weighteds multiplied
+  // Display cpt at bottom
+  // figure out how to get the probability chosen from these variables
+  // Display utility value
 
   settings() {
     return (
