@@ -18,7 +18,9 @@ class Calculator extends Component {
         weightedsMultiplied: 0,
         utility: 0,
         id: 0
-      }]
+      }],
+      totalUtility: 0,
+      totalProspect: 0
     } 
     
 
@@ -106,6 +108,12 @@ class Calculator extends Component {
   decimalInput(name) {
     return (
       <input type="number" onChange={e => this.handleChange(e.nativeEvent, name)} value={this.state[name]} step="0.01" className="form-control" />
+    );
+  }
+
+  resultInput(name) {
+    return (
+      <input className="form-control" type="text" value={this.state[name]} readOnly />
     );
   }
 
@@ -235,11 +243,14 @@ class Calculator extends Component {
     prospects[prospects.length - 1].weightedProbability = this.positiveWeighting(prospects[prospects.length - 1].probability / 100);
 
 
-  
+    let totalProspect = 0;
+    let totalUtility = 0;
     for (let i = 0; i < prospects.length; i++) {
       prospects[i].weightedValue = this.valueFunction(prospects[i].result);
       prospects[i].weightedsMultiplied = prospects[i].weightedProbability * prospects[i].weightedValue;
       prospects[i].utility = prospects[i].probability * prospects[i].result / 100;
+      totalUtility += prospects[i].utility;
+      totalProspect += prospects[i].weightedsMultiplied;
     }
     
     prospects.sort((p1, p2) => {
@@ -247,7 +258,9 @@ class Calculator extends Component {
     });
 
     this.setState({
-      prospects
+      prospects,
+      totalUtility,
+      totalProspect
     });
 
     localStorage.setItem("prospects", JSON.stringify(prospects));
@@ -323,11 +336,38 @@ class Calculator extends Component {
         </form>
       </div>
     );
-  } // make weighted only appear on lg screens
-  // display weighteds multiplied
+  }
   // Display cpt at bottom
-  // figure out how to get the probability chosen from these variables
-  // Display utility value
+
+  dataResults() {
+    const labelClasses = classNames("col-4 overflow-hidden text-nowrap col-sm-12 col-lg-4".split(" "))
+    const inputClasses = classNames("col-8 col-sm-12 col-lg-8".split(" "))
+
+    return (
+      <div>
+        <form className="container" onSubmit={e => e.preventDefault()}>
+          <div className="form-group row mb-5">
+            <div className="col-md">
+              <div className="row pb-2 pb-sm-0">
+                <label className={labelClasses}>Total Prospect</label>
+                <div className={inputClasses}>
+                  {this.resultInput("totalProspect")}
+                </div>
+              </div>
+            </div>
+            <div className="col-md">
+              <div className="row pb-2 pb-sm-0">
+                <label className={labelClasses}>Total Utility</label>
+                <div className={inputClasses}>
+                  {this.resultInput("totalUtility")}
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    );
+  }
 
   settings() {
     return (
@@ -374,6 +414,7 @@ class Calculator extends Component {
       <div className="container-fluid">
         <h1 className="text-primary">Calculator</h1>
         {this.dataInput()}
+        {this.dataResults()}
         {this.settings()}
       </div>
     );
@@ -381,5 +422,6 @@ class Calculator extends Component {
 }
 
 // explain each variable below the calculator
-// hide all of the settings underneath a dropdown
+// have each variable link to its explanation
+
 export default Calculator;
