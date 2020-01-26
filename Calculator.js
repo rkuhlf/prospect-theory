@@ -14,9 +14,16 @@ class Calculator extends Component {
         result: 10,
         probability: 5,
         weightedProbability: 0,
-        weightedValue: 0
+        weightedValue: 0,
+        id: 0
       }]
-    } // refactor all of these arrays into an array of objects
+    } 
+    
+
+    let localProspects = localStorage.getItem("prospects");
+    if (localProspects) {
+      this.state.prospects = JSON.parse(localProspects);
+    }
 
     this.handleChange = this.handleChange.bind(this);
     this.toggleSettings = this.toggleSettings.bind(this);
@@ -31,9 +38,11 @@ class Calculator extends Component {
   // Math
   positiveWeighting(p) {
     let gamma = this.state.gainProbabilityWeighting;
+
     const numerator = Math.pow(p, gamma);
     const denominator = Math.pow(numerator + Math.pow(1-p, gamma), 1/gamma);
 
+    console.log(numerator/denominator);
     return numerator/denominator;
   }
 
@@ -100,7 +109,6 @@ class Calculator extends Component {
   }
 
   resultIndexedInput(name, index, name2) {
-    console.log("result", this.state[name][index])
     return (
       <input className="form-control" type="text" value={this.state[name][index][name2]} readOnly />
     );
@@ -130,21 +138,48 @@ class Calculator extends Component {
   }
 
   addResult() {
-    // refactor this
     this.setState(prevState => {
-      let newResults = prevState.results;
-      newResults.push(0);
-      let newProbabilities = prevState.probabilities;
-      newProbabilities.push(0);
+      let prospects = prevState.prospects;
+      prospects.push({
+        result: 0,
+        probability: 0,
+        weightedProbability: 0,
+        weightedValue: 0,
+        id: 0
+      });
 
       return {
-        probabilities: newProbabilities,
-        results: newResults
+        prospects
       }
     }, this.recalculateState);
   }
 
+  deleteProspect(index) {
+    this.setState(prevState => {
+      let prospects = prevState.prospects;
+      prospects.splice(index);
+
+      return {
+        prospects
+      }
+    }, this.recalculateState);
+  }
+
+  assignIDs() {
+    let prospects = [...this.state.prospects];
+
+    for (let i = 0; i < prospects.length; i++) {
+      prospects[i].id = i;
+    }
+
+    this.setState({
+      prospects
+    });
+  }
+
   recalculateState() {
+    this.assignIDs();
+
     // This for regular prospects
     // calculate and show:
     // weighted probabilities
@@ -153,28 +188,65 @@ class Calculator extends Component {
     // what the sum of all of the multiplied is
 
     let prospects = [...this.state.prospects];
-    console.log("Calculating state", prospects);
-  
+    prospects.sort((p1, p2) => {
+      return p1.result - p2.result;
+    });
+
+    let positiveStart = 0;
+
+    for (let i = 0; i < prospects.length; i++) {
+      prospects[i].result = parseFloat(prospects[i].result);
+      prospects[i].probability = parseFloat(prospects[i].probability);
+    }
+    
     for (let i = 0; i < prospects.length; i++) {
       if (prospects[i].result > 0) {
-        
-        const weightedProb = this.positiveWeighting(prospects[i].probability / 100);
-        prospects[i].weightedProbability = weightedProb;
-      } else if (prospects[i].result < 0) {
-        const weightedProb = this.negativeWeighting(prospects[i].probability / 100);
-        prospects[i].weightedProbability = weightedProb;
-      } else {
-        prospects[i].weightedProbability = 0;
+        positiveStart = i;
+        break;
       }
-
-      prospects[i].weightedValue = this.valueFunction(prospects[i].result);
     }
 
-    console.log("finished calculating", prospects);
+    if (positiveStart != 0) { // if there are negative possibilities
+      prospects[0].weightedProbability = this.negativeWeighting(prospects[0].probability / 100);
+
+      for (let i = 1; i < positiveStart; i++) {
+        let allProbSum = 0;
+        for (let j = 0; j <= i; j++) {
+          allProbSum += prospects[j].probability;
+        }
+        let mostProbSum = allProbSum - prospects[i].probability;
+
+        prospects[i].weightedProbability = this.negativeWeighting(allProbSum / 100) - this.negativeWeighting(mostProbSum / 100);
+      }
+    }
+
+    for (let i = positiveStart; i < prospects.length - 1; i++) {
+      let allProbSum = 0;
+      for (let j = i; j < prospects.length; j++) {
+        allProbSum += prospects[j].probability;
+      }
+      let mostProbSum = allProbSum - prospects[i].probability;
+
+      prospects[i].weightedProbability = this.positiveWeighting(allProbSum / 100) - this.positiveWeighting(mostProbSum / 100);
+    }
+
+    prospects[prospects.length - 1].weightedProbability = this.positiveWeighting(prospects[prospects.length - 1].probability / 100);
+
+
+  
+    for (let i = 0; i < prospects.length; i++) {
+      prospects[i].weightedValue = this.valueFunction(prospects[i].result);
+    }
+    
+    prospects.sort((p1, p2) => {
+      return p1.id - p2.id;
+    });
 
     this.setState({
       prospects
     });
+
+    localStorage.setItem("prospects", JSON.stringify(prospects));
   }
 
   dataInput() {
@@ -186,34 +258,39 @@ class Calculator extends Component {
               <div className="form-group row">
                 <div className="col-sm">
                   <div className="row">
-                    <label className="col-4 col-form-label">Result</label>
-                    <div className="col-8">
+                    <label className="col-4 col-sm-12 col-lg-4">Result</label>
+                    <div className="col-8 col-sm-12 col-lg-8">
                       {this.indexedDecimalInput("prospects", index, "result")}
                     </div>
                   </div>
                 </div>
                 <div className="col-sm">
                   <div className="row">
-                    <label className="col-4 col-form-label">Probability</label>
-                    <div className="col-8">
+                    <label className="col-4 col-sm-12 col-lg-4">Probability</label>
+                    <div className="col-8 col-sm-12 col-lg-8">
                       {this.indexedDecimalInput("prospects", index, "probability")}
                     </div>
                   </div>
                 </div>
                 <div className="col-sm">
                   <div className="row">
-                    <label className="col-4 col-form-label">Weighted Probability</label>
-                    <div className="col-8">
+                    <label className="col-4 col-sm-12 col-lg-4">Weighted Probability</label>
+                    <div className="col-8 col-sm-12 col-lg-8">
                       {this.resultIndexedInput("prospects", index, "weightedProbability")}
                     </div>
                   </div>
                 </div>
                 <div className="col-sm">
                   <div className="row">
-                    <label className="col-4 col-form-label">Weighted Value</label>
-                    <div className="col-8">
+                    <label className="col-4 col-sm-12 col-lg-4">Weighted Value</label>
+                    <div className="col-8 col-sm-12 col-lg-8">
                       {this.resultIndexedInput("prospects", index, "weightedValue")}
                     </div>
+                  </div>
+                </div>
+                <div className="col-sm">
+                  <div onClick={() => this.deleteProspect(index)} className="btn btn-danger">
+                    Delete
                   </div>
                 </div>
               </div>
