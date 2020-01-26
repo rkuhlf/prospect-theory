@@ -337,7 +337,9 @@ class Calculator extends Component {
       </div>
     );
   }
-  // Display cpt at bottom
+
+  // calculate certainty equivalent
+  // automatically add a thing that brings the probabilities to zero
 
   dataResults() {
     const labelClasses = classNames("col-4 overflow-hidden text-nowrap col-sm-12 col-lg-4".split(" "))

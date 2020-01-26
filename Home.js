@@ -2,10 +2,9 @@ import React, {Component} from 'react';
 import GoToCard from "./GoToCard";
 
 class Home extends Component {
-5
   render() {
     return (
-      <div>
+      <div className="mt-n2">
         <div className="bg-dark text-center p-5">
           <h1><span className="badge badge-secondary text-light text-wrap p-3">Prospect Theory</span></h1>
           <p className="text-light">Your home for getting a grip on what prospect theory means and using that to understand decisions.</p>
