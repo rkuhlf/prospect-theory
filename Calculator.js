@@ -15,6 +15,8 @@ class Calculator extends Component {
         probability: 5,
         weightedProbability: 0,
         weightedValue: 0,
+        weightedsMultiplied: 0,
+        utility: 0,
         id: 0
       }]
     } 
@@ -144,6 +146,8 @@ class Calculator extends Component {
         probability: 0,
         weightedProbability: 0,
         weightedValue: 0,
+        weightedsMultiplied: 0,
+        utility: 0,
         id: 0
       });
 
@@ -234,6 +238,8 @@ class Calculator extends Component {
   
     for (let i = 0; i < prospects.length; i++) {
       prospects[i].weightedValue = this.valueFunction(prospects[i].result);
+      prospects[i].weightedsMultiplied = prospects[i].weightedProbability * prospects[i].weightedValue;
+      prospects[i].utility = prospects[i].probability * prospects[i].result / 100;
     }
     
     prospects.sort((p1, p2) => {
@@ -255,7 +261,7 @@ class Calculator extends Component {
         <form className="container" onSubmit={e => e.preventDefault()}>
           {
             this.state.prospects.map((item, index) => (
-              <div className="form-group row mb-5">
+              <div key={index} className="form-group row mb-5">
                 <div className="col-md">
                   <div className="row pb-2 pb-sm-0">
                     <label className={labelClasses}>Result</label>
@@ -272,7 +278,7 @@ class Calculator extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="col-md">
+                <div className="col-md d-xl-block d-none">
                   <div className="row pb-2 pb-sm-0">
                     <label className={labelClasses}>Weighted Probability</label>
                     <div className={inputClasses}>
@@ -280,7 +286,7 @@ class Calculator extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="col-md">
+                <div className="col-md d-xl-block d-none">
                   <div className="row pb-2 pb-sm-0">
                     <label className={labelClasses}>Weighted Value</label>
                     <div className={inputClasses}>
@@ -288,7 +294,23 @@ class Calculator extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="col-md my-sm-3 my-lg-0">
+                <div className="col-md">
+                  <div className="row pb-2 pb-sm-0">
+                    <label className={labelClasses}>Prospect Value</label>
+                    <div className={inputClasses}>
+                      {this.resultIndexedInput("prospects", index, "weightedsMultiplied")}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md">
+                  <div className="row pb-2 pb-sm-0">
+                    <label className={labelClasses}>Utility Value</label>
+                    <div className={inputClasses}>
+                      {this.resultIndexedInput("prospects", index, "utility")}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md my-sm-3 my-lg-0 text-right">
                   <div onClick={() => this.deleteProspect(index)} className="btn btn-danger">
                     Delete
                   </div>
