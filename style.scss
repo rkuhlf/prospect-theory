@@ -1,0 +1,28 @@
+$primary: #111D4A;
+$secondary: #92140C;
+$dark: #1E1E24;
+$light: #FFF8F0;
+$info: #FFCF99;
+$success: #B6D1AB;
+$danger: #E5B7B7;
+$warning: #EDD07B;
+$body-bg: $light;
+$body-color: $dark;
+
+@import "~bootstrap/scss/bootstrap";
+
+
+h1, p {
+  font-family: Lato;
+}
+
+.btn-primary {
+  color: $light !important;
+}
+
+.scale-image {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  max-height: 200px;
+}
