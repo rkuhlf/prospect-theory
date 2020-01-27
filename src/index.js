@@ -13,7 +13,6 @@ class App extends Component {
   render() {
     return (
       <Router>
-        
         <div className="wrapper">
           <TopNav />
           <Route path="/" component={Home} exact/>
