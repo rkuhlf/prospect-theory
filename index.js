@@ -12,14 +12,12 @@ import './style.scss';
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      name: 'React'
-    };
   }
 
   render() {
     return (
       <Router>
+        
         <div className="wrapper">
           <TopNav />
           <Route path="/" component={Home} exact/>

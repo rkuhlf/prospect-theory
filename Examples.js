@@ -33,7 +33,7 @@ class Examples extends Component {
         </p>
 
         <h3 id="risk">Risk Aversion and Risk Seeking</h3>
-        <p>
+        <div>
           The utility theory model shows risk as following a linear path, but prospect theory has several updates.
 
           <table className="table px-3 my-2">
@@ -49,7 +49,7 @@ class Examples extends Component {
                 <th scope="row">
                   High Probability
                   <br />
-                  <span classNameName="text-muted"><small>
+                  <span className="text-muted"><small>
                     Certainty Effect
                   </small></span>
                 </th>
@@ -92,7 +92,7 @@ class Examples extends Component {
                 <th scope="row">
                   Low Probability
                   <br />
-                  <span classNameName="text-muted"><small>
+                  <span className="text-muted"><small>
                     Possibility Effect
                   </small></span>
                 </th>
@@ -134,8 +134,8 @@ class Examples extends Component {
               
             </tbody>
           </table>
-          
-        </p>
+
+        </div>
       </Article>
     );
   }
