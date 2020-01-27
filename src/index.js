@@ -10,10 +10,6 @@ import Footer from './Footer';
 import './style.scss';
 
 class App extends Component {
-  constructor() {
-    super();
-  }
-
   render() {
     return (
       <Router>
