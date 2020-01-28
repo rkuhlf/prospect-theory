@@ -10,6 +10,7 @@ class Explanation extends Component {
           Prospect theory is a fairly recently introduced economic model that focuses on accounting for many seemingly illogical human biases, like loss aversion, the certainty effect, and the mis-weighting of probabilities that utility theory (the previous economic model) doesn't consider. 
         </p>
 
+        <h2>Biases</h2>
         <h3 id="loss-aversion">Loss Aversion</h3>
         <p>
           Loss aversion is the economic term for the basic idea that people are less likely to take a risk of losing something than they are to take a risk to gain something. Loss aversion can explain the sunk cost fallacy, because once you've invested time into doing something, quitting means that all of that time is "lost."
