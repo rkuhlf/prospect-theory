@@ -2,19 +2,13 @@ import React, {Component} from 'react';
 import Article from "./Article";
 import { Fraction, toTex } from 'algebra.js';
 import Formula from "./Formula";
+// use http://detexify.kirelabs.org/classify.html to translate to latex
 
 class Explanation extends Component {
 
   render() {
-    const a = new Fraction(1, 5);
-    const b = new Fraction(2, 7);
-    const answer = a.multiply(b);
-
-    const question = <Formula tex={`${toTex(a)} × ${toTex(b)} = ${toTex(answer)}`} />;
-
     return (
       <Article title="Explanation" scrollLinks={["Explanation", "Loss Aversion", "Mis-Weighting Probabilities", "Certainty Effect"]} scrollIds={["title", "loss-aversion", "probability-weighting", "certainty-effect"]}>
-        {question}
         <p>
           Prospect theory is a fairly recently introduced economic model that focuses on accounting for many seemingly illogical human biases, like loss aversion, the certainty effect, and the mis-weighting of probabilities that utility theory (the previous economic model) doesn't consider. 
         </p>
@@ -40,6 +34,9 @@ class Explanation extends Component {
         <h3 id="math-model">The Mathematical Model</h3>
         <p>
           So how does prospect theory attempt to encapsulate all of these human biases into a mathematical model?
+          To determine the total prospect value (how good a gamble is percieved as), you would map each probability through a function <Formula tex={`${"\\pi(p)"}`} /> and the possible result of each function through a separate function <Formula tex={`${"v(x)"}`} />.
+          Probability weighting biases are accounted for with the pi function which should follow a curve like this. {/* insert a graph */}
+          However, humans consider losses separately from gains, so we should define two weighting functions <Formula tex={`${"w^+(p)"}`} /> for gains and <Formula tex={`${"w^-(p)"}`} /> for losses. This means that the probability weight (<Formula tex={`${"\\pi"}`} />) function looks like <Formula notInline={true} tex={`${'\\pi(p) =\\begin{cases}w^+(p),  & \\text{if $x$ > 0} \\\\0,  & \\text{if $x$ = 0} \\\\w^-(p), & \\text{if $x$ < 0}\\end{cases}'}`} />
         </p>
       </Article>
     );
