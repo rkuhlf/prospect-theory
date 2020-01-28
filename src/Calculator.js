@@ -61,7 +61,7 @@ class Calculator extends Component {
   valueFunction(x) {
     if (x > 0) {
       return this.positiveValue(x);
-    } else if (x == 0) {
+    } else if (x === 0) {
       return 0;
     } else {
       return this.state.lossAversion * this.lossValue(x);
@@ -73,7 +73,7 @@ class Calculator extends Component {
 
     if (alpha > 0) {
       return Math.pow(x, alpha);
-    } else if (alpha == 0) {
+    } else if (alpha === 0) {
       return this.getNaturalLog(x);
     } else {
       return 1 - Math.pow(1 + x, alpha)
@@ -85,7 +85,7 @@ class Calculator extends Component {
 
     if (beta > 0) {
       return -Math.pow(-x, beta);
-    } else if (beta == 0) {
+    } else if (beta === 0) {
       return -this.getNaturalLog(-x);
     } else {
       return Math.pow(1 - x, beta) - 1

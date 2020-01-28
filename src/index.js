@@ -10,14 +10,9 @@ import Footer from './Footer';
 import './style.scss';
 
 class App extends Component {
-  constructor() {
-    super();
-  }
-
   render() {
     return (
       <Router>
-        
         <div className="wrapper">
           <TopNav />
           <Route path="/" component={Home} exact/>
