@@ -199,6 +199,12 @@ class Calculator extends Component {
     // delete it at the end (make it have id 0)
 
     let prospects = [...this.state.prospects];
+    if (!prospects) {
+      return;
+    }
+    if (prospects.length === 0) {
+      return;
+    }
     prospects.sort((p1, p2) => {
       return p1.result - p2.result;
     });
