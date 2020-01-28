@@ -217,7 +217,7 @@ class Calculator extends Component {
       }
     }
 
-    if (positiveStart != 0) { // if there are negative possibilities
+    if (positiveStart !== 0) { // if there are negative possibilities
       prospects[0].weightedProbability = this.negativeWeighting(prospects[0].probability / 100);
 
       for (let i = 1; i < positiveStart; i++) {
