@@ -9,7 +9,7 @@ class Article extends Component {
         <h1 id="title" className="text-primary">{this.props.title}</h1>
         <div className="row">
           <div className="col-sm">
-            <div className="d-none d-sm-block shadow-sm p-3 mb-3 bg-white rounded">
+            <div className="d-none d-sm-block shadow-sm p-3 mb-3 bg-white rounded h-75">
               <div className="sticky-top">
                 <ul className="list-unstyled">
                   {
