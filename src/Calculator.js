@@ -3,6 +3,7 @@ import classNames from "classnames";
 
 class Calculator extends Component {
   constructor(props) {
+    super(props);
     this.state = {
       gainPower: 0.88, // alpha
       lossPower: 0.88, // beta
