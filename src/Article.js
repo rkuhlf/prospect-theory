@@ -15,7 +15,7 @@ class Article extends Component {
                   {
                     this.props.scrollLinks.map((item, index) => {
                       return (
-                        <li className="btn btn-link d-block text-left">
+                        <li key={index} className="btn btn-link d-block text-left">
                           <ScrollLink scrollID={this.props.scrollIds[index]}>{item}</ScrollLink>
                         </li>
                       )
