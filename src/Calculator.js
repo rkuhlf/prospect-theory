@@ -314,7 +314,7 @@ class Calculator extends Component {
 
   dataInput() {
     const labelClasses = classNames(
-      "col-4 overflow-hidden text-nowrap col-sm-12 col-lg-4".split(" ")
+      "col-4 overflow-hidden text-nowrap col-sm-12 col-lg-4 cursor-pointer btn-link".split(" ")
     );
     const inputClasses = classNames("col-8 col-sm-12 col-lg-8".split(" "));
     return (
@@ -324,7 +324,7 @@ class Calculator extends Component {
             <div key={index} className="form-group row mb-5">
               <div className="col-md">
                 <div className="row pb-2 pb-sm-0">
-                  <label className={labelClasses}>Result</label>
+                  <label className={labelClasses}><ScrollLink scrollID="result-explanation">Result</ScrollLink></label>
                   <div className={inputClasses}>
                     {this.indexedDecimalInput("prospects", index, "result")}
                   </div>
@@ -332,7 +332,7 @@ class Calculator extends Component {
               </div>
               <div className="col-md">
                 <div className="row pb-2 pb-sm-0">
-                  <label className={labelClasses}>Probability</label>
+                  <label className={labelClasses}><ScrollLink scrollID="probability-explanation">Probability</ScrollLink></label>
                   <div className={inputClasses}>
                     {this.indexedDecimalInput(
                       "prospects",
@@ -344,7 +344,7 @@ class Calculator extends Component {
               </div>
               <div className={classNames("col-md " + this.state.cssShowOnBigScreens)}>
                 <div className="row pb-2 pb-sm-0">
-                  <label className={labelClasses}>Weighted Probability</label>
+                  <label className={labelClasses}><ScrollLink scrollID="weighted-probability-explanation">Weighted Probability</ScrollLink></label>
                   <div className={inputClasses}>
                     {this.resultIndexedInput(
                       "prospects",
@@ -356,7 +356,7 @@ class Calculator extends Component {
               </div>
               <div className={classNames("col-md " + this.state.cssShowOnBigScreens)}>
                 <div className="row pb-2 pb-sm-0">
-                  <label className={labelClasses}>Weighted Value</label>
+                  <label className={labelClasses}><ScrollLink scrollID="weighted-value-explanation">Weighted Value</ScrollLink></label>
                   <div className={inputClasses}>
                     {this.resultIndexedInput(
                       "prospects",
@@ -368,7 +368,7 @@ class Calculator extends Component {
               </div>
               <div className="col-md">
                 <div className="row pb-2 pb-sm-0">
-                  <label className={labelClasses}>Prospect Value</label>
+                  <label className={labelClasses}><ScrollLink scrollID="prospect-value-explanation">Prospect Value</ScrollLink></label>
                   <div className={inputClasses}>
                     {this.resultIndexedInput(
                       "prospects",
@@ -380,7 +380,7 @@ class Calculator extends Component {
               </div>
               <div className="col-md">
                 <div className="row pb-2 pb-sm-0">
-                  <label className={labelClasses}>Utility Value</label>
+                  <label className={labelClasses}><ScrollLink scrollID="utility-value-explanation">Utility Value</ScrollLink></label>
                   <div className={inputClasses}>
                     {this.resultIndexedInput("prospects", index, "utility")}
                   </div>
@@ -410,7 +410,7 @@ class Calculator extends Component {
 
   dataResults() {
     const labelClasses = classNames(
-      "col-4 overflow-hidden text-nowrap col-sm-12 col-lg-4".split(" ")
+      "col-4 cursor-pointer btn-link overflow-hidden text-nowrap col-sm-12 col-lg-4".split(" ")
     );
     const inputClasses = classNames("col-8 col-sm-12 col-lg-8".split(" "));
 
@@ -420,7 +420,7 @@ class Calculator extends Component {
           <div className="form-group row mb-5">
             <div className="col-md">
               <div className="row pb-2 pb-sm-0">
-                <label className={labelClasses}>Total Prospect</label>
+                <label className={labelClasses}><ScrollLink scrollID="total-prospect-explanation">Total Prospect</ScrollLink></label>
                 <div className={inputClasses}>
                   {this.resultInput("totalProspect")}
                 </div>
@@ -428,7 +428,7 @@ class Calculator extends Component {
             </div>
             <div className="col-md">
               <div className="row pb-2 pb-sm-0">
-                <label className={labelClasses}>Total Utility</label>
+                <label className={labelClasses}><ScrollLink scrollID="total-utility-explanation">Total Utility</ScrollLink></label>
                 <div className={inputClasses}>
                   {this.resultInput("totalUtility")}
                 </div>
@@ -483,44 +483,42 @@ class Calculator extends Component {
   variableExplanations() {
     return (
       <div>
-        <h3>Result</h3>
+        <h3 id="result-explanation">Result</h3>
         <p>
           The result is the hypothetical amount that would be gained or lost if the probability occurs.
         </p>
 
-        <h3>Probability</h3>
+        <h3 id="probability-explanation">Probability</h3>
         <p>
           The probability is the chance that you recieve the result out of 100.
         </p>
 
-        <h3 classNames={classNames(this.state.cssShowOnBigScreens)}>Weighted Probability</h3>
+        <h3  id="weighted-probability-explanation" classNames={classNames(this.state.cssShowOnBigScreens)}>Weighted Probability</h3>
         <p>
           This is the way that the model, and hopefully your mind, view the probability. It is weighted to conform to several known human biases.
         </p>
 
-        <h3 classNames={classNames(this.state.cssShowOnBigScreens)}>Weighted Value</h3>
+        <h3  id="weighted-value-explanation" classNames={classNames(this.state.cssShowOnBigScreens)}>Weighted Value</h3>
         <p>
           This is the way that the model, and hopefully your mind, view the value. It is weighted to conform to several known human biases and better follow the way humans view money (or anything else).
         </p>
 
-        <h3>Prospect Value</h3>
+        <h3 id="prospect-value-explanation">Prospect Value</h3>
         <p>
           The prospect value is the predicted amount that this possibility will make you choose the decision. For example, if the prospect value is 30, that one possibility is increasing the likelihood that you take the risk. If the prospect value is -20, that possibility decreases the likelihood of taking the risk.
         </p>
 
-        <h3>Utility Value</h3>
+        <h3 id="utility-value-explanation">Utility Value</h3>
         <p>
           Utility theory is the previous economic model for human decision making. It is provided here for comparison and serves the same general purpose as prospect value. The higher the value, the more the individual possibility increases the attractiveness of the decision overall.
         </p>
 
-        {/* add in the other ones that might show. Make a state variable that has their css classes and apply it to the explanations. */}
-
-        <h3>Total Prospect</h3>
+        <h3 id="total-prospect-explanation">Total Prospect</h3>
         <p>
           The total prospect is the sum of the prospect values of all the possibilities. The higher it is, the more likely you would be predicted to take that bet.
         </p>
 
-        <h3>Total Utility</h3>
+        <h3 id="total-utility-explanation">Total Utility</h3>
         <p>
           The total utility is the sum of the utility values of all the possibilities. The higher it is, the more likely you would be predicted by utility theory to take that bet.
         </p>
