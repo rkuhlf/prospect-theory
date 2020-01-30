@@ -522,6 +522,42 @@ class Calculator extends Component {
         <p>
           The total utility is the sum of the utility values of all the possibilities. The higher it is, the more likely you would be predicted by utility theory to take that bet.
         </p>
+
+        <div className={classNames({ "d-none": !this.state.showSettings })}>
+          <h3>Settings</h3>
+          <p>
+            Changing the settings variables will impact the model. They are automatically set to the recommended value, but you can alter them to see what they do.
+          </p>
+
+          <h5 id="gain-power-explanation">Gain Power</h5>
+          <p>
+            The gain power setting controls how the model weights gains. The higher the gain power, the more high values are weighted. The recommended value is about 0.88, and the model works best if it's greater than zero but less than 1. This is because the way we weight value becomes less and less the proportional higher it is. Decreasing the value to less than zero will make huge values have only small differences from the small values.
+            {/* graph the current setting */}
+          </p>
+
+          <h5 id="loss-power-explanation">Loss Power</h5>
+          <p>
+            The gain power setting controls how the model weights losses. The higher the loss power, the more large losses are weighted. The recommended value is about 0.88, and the model works best if it's greater than zero but less than 1. This is because the way we weight value becomes less and less the proportional the larger it is. Decreasing the value to less than zero will make huge values have only small differences from the small values.
+            {/* graph the current setting */}
+          </p>
+
+          <h5 id="loss-aversion-explanation">Loss Aversion</h5>
+          <p>
+            Humans are more averse to losses than we are keen on gains. Each loss is multiplied by the loss aversion variable. The preset value is 2.25 and the model works best if it is greater than one.
+          </p>
+
+          <h5 id="gain-probability-weighting-explanation">Gain Probability Weighting</h5>
+          <p>
+            The gain probability weighting setting is used to weight the probability that humans give to gains. 
+            {/*Graph probability gain weight*/}
+          </p>
+
+          <h5 id="loss-probability-weighting-explanation">Loss Probability Weighting</h5>
+          <p>
+            The loss probability weighting setting is used to weight the probability that humans give to losses. 
+            {/*Graph probability gain weight*/}
+          </p>
+        </div>
       </div>
     )
   }
