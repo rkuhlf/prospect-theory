@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import GoToCard from "./GoToCard";
+// view page online at http://prospect-theory.herokuapp.com/
 
 class Home extends Component {
   render() {

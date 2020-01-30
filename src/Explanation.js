@@ -3,10 +3,40 @@ import Article from "./Article";
 import { Fraction, toTex } from 'algebra.js';
 import Formula from "./Formula";
 // use http://detexify.kirelabs.org/classify.html to translate to latex
+import { Line } from 'react-chartjs-2';
+
+
 
 class Explanation extends Component {
 
   render() {
+    const probabilityFunctionData = {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [
+        {
+          label: 'Probability Weighting Function',
+          fill: false,
+          lineTension: 0.1,
+          backgroundColor: 'rgb(30, 47, 109)',
+          borderColor: 'rgb(30, 47, 109)',
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: 'rgb(30, 47, 109)',
+          pointBackgroundColor: 'rgb(120, 147, 209)',
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: 'rgb(30, 47, 109)',
+          pointHoverBorderColor: 'rgb(120, 147, 209)',
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          data: [65, 59, 80, 81, 56, 55, 40]
+        } // make it curved
+      ]
+    }
+
     return (
       <Article title="Explanation" scrollLinks={["Explanation", "Loss Aversion", "Mis-Weighting Probabilities", "Certainty Effect"]} scrollIds={["title", "loss-aversion", "probability-weighting", "certainty-effect"]}>
         <p>
@@ -37,6 +67,7 @@ class Explanation extends Component {
           To determine the total prospect value (how good a gamble is percieved as), you would map each probability through a function <Formula tex={`${"\\pi(p)"}`} /> and the possible result of each function through a separate function <Formula tex={`${"v(x)"}`} />.
           Probability weighting biases are accounted for with the pi function which should follow a curve like this. {/* insert a graph */}
           However, humans consider losses separately from gains, so we should define two weighting functions <Formula tex={`${"w^+(p)"}`} /> for gains and <Formula tex={`${"w^-(p)"}`} /> for losses. This means that the probability weight (<Formula tex={`${"\\pi"}`} />) function looks like <Formula notInline={true} tex={`${'\\pi(p) =\\begin{cases}w^+(p),  & \\text{if $x$ > 0} \\\\0,  & \\text{if $x$ = 0} \\\\w^-(p), & \\text{if $x$ < 0}\\end{cases}'}`} />
+          <Line data={probabilityFunctionData} />
         </p>
       </Article>
     );

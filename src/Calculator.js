@@ -1,5 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 import classNames from "classnames";
+import ScrollLink from "./ScrollLink";
 
 class Calculator extends Component {
   constructor(props) {
@@ -11,19 +12,21 @@ class Calculator extends Component {
       gainProbabilityWeighting: 0.61, // gamma
       lossProbabilityWeighting: 0.69, // delta
       showSettings: false,
-      prospects: [{
-        result: 10,
-        probability: 5,
-        weightedProbability: 0,
-        weightedValue: 0,
-        weightedsMultiplied: 0,
-        utility: 0,
-        id: 0
-      }],
+      prospects: [
+        {
+          result: 10,
+          probability: 5,
+          weightedProbability: 0,
+          weightedValue: 0,
+          weightedsMultiplied: 0,
+          utility: 0,
+          id: 0
+        }
+      ],
       totalUtility: 0,
-      totalProspect: 0
-    } 
-    
+      totalProspect: 0,
+      cssShowOnBigScreens: "d-xl-block d-none"
+    };
 
     let localProspects = localStorage.getItem("prospects");
     if (localProspects) {
@@ -45,17 +48,17 @@ class Calculator extends Component {
     let gamma = this.state.gainProbabilityWeighting;
 
     const numerator = Math.pow(p, gamma);
-    const denominator = Math.pow(numerator + Math.pow(1-p, gamma), 1/gamma);
+    const denominator = Math.pow(numerator + Math.pow(1 - p, gamma), 1 / gamma);
 
-    return numerator/denominator;
+    return numerator / denominator;
   }
 
   negativeWeighting(p) {
     let delta = this.state.lossProbabilityWeighting;
     const numerator = Math.pow(p, delta);
-    const denominator = Math.pow(numerator + Math.pow(1-p, delta), 1/delta);
+    const denominator = Math.pow(numerator + Math.pow(1 - p, delta), 1 / delta);
 
-    return numerator/denominator;
+    return numerator / denominator;
   }
 
   valueFunction(x) {
@@ -76,7 +79,7 @@ class Calculator extends Component {
     } else if (alpha === 0) {
       return this.getNaturalLog(x);
     } else {
-      return 1 - Math.pow(1 + x, alpha)
+      return 1 - Math.pow(1 + x, alpha);
     }
   }
 
@@ -88,7 +91,7 @@ class Calculator extends Component {
     } else if (beta === 0) {
       return -this.getNaturalLog(-x);
     } else {
-      return Math.pow(1 - x, beta) - 1
+      return Math.pow(1 - x, beta) - 1;
     }
   }
 
@@ -108,19 +111,35 @@ class Calculator extends Component {
 
   decimalInput(name) {
     return (
-      <input type="number" onChange={e => this.handleChange(e.nativeEvent, name)} value={this.state[name]} step="0.01" className="form-control" />
+      <input
+        type="number"
+        onChange={e => this.handleChange(e.nativeEvent, name)}
+        value={this.state[name]}
+        step="0.01"
+        className="form-control"
+      />
     );
   }
 
   resultInput(name) {
     return (
-      <input className="form-control" type="text" value={this.state[name]} readOnly />
+      <input
+        className="form-control"
+        type="text"
+        value={this.state[name]}
+        readOnly
+      />
     );
   }
 
   resultIndexedInput(name, index, name2) {
     return (
-      <input className="form-control" type="text" value={this.state[name][index][name2]} readOnly />
+      <input
+        className="form-control"
+        type="text"
+        value={this.state[name][index][name2]}
+        readOnly
+      />
     );
   }
 
@@ -137,7 +156,15 @@ class Calculator extends Component {
 
   indexedDecimalInput(name, index, name2) {
     return (
-      <input type="number" onChange={e => this.handleIndexedChange(e.nativeEvent, name, index, name2)} value={this.state[name][index][name2]} step="0.01" className="form-control" />
+      <input
+        type="number"
+        onChange={e =>
+          this.handleIndexedChange(e.nativeEvent, name, index, name2)
+        }
+        value={this.state[name][index][name2]}
+        step="0.01"
+        className="form-control"
+      />
     );
   }
 
@@ -162,7 +189,7 @@ class Calculator extends Component {
 
       return {
         prospects
-      }
+      };
     }, this.recalculateState);
   }
 
@@ -173,7 +200,7 @@ class Calculator extends Component {
 
       return {
         prospects
-      }
+      };
     }, this.recalculateState);
   }
 
@@ -215,7 +242,7 @@ class Calculator extends Component {
       prospects[i].result = parseFloat(prospects[i].result);
       prospects[i].probability = parseFloat(prospects[i].probability);
     }
-    
+
     for (let i = 0; i < prospects.length; i++) {
       if (prospects[i].result > 0) {
         positiveStart = i;
@@ -223,8 +250,11 @@ class Calculator extends Component {
       }
     }
 
-    if (positiveStart !== 0) { // if there are negative possibilities
-      prospects[0].weightedProbability = this.negativeWeighting(prospects[0].probability / 100);
+    if (positiveStart !== 0) {
+      // if there are negative possibilities
+      prospects[0].weightedProbability = this.negativeWeighting(
+        prospects[0].probability / 100
+      );
 
       for (let i = 1; i < positiveStart; i++) {
         let allProbSum = 0;
@@ -233,7 +263,9 @@ class Calculator extends Component {
         }
         let mostProbSum = allProbSum - prospects[i].probability;
 
-        prospects[i].weightedProbability = this.negativeWeighting(allProbSum / 100) - this.negativeWeighting(mostProbSum / 100);
+        prospects[i].weightedProbability =
+          this.negativeWeighting(allProbSum / 100) -
+          this.negativeWeighting(mostProbSum / 100);
       }
     }
 
@@ -244,22 +276,29 @@ class Calculator extends Component {
       }
       let mostProbSum = allProbSum - prospects[i].probability;
 
-      prospects[i].weightedProbability = this.positiveWeighting(allProbSum / 100) - this.positiveWeighting(mostProbSum / 100);
+      prospects[i].weightedProbability =
+        this.positiveWeighting(allProbSum / 100) -
+        this.positiveWeighting(mostProbSum / 100);
     }
 
-    prospects[prospects.length - 1].weightedProbability = this.positiveWeighting(prospects[prospects.length - 1].probability / 100);
-
+    prospects[
+      prospects.length - 1
+    ].weightedProbability = this.positiveWeighting(
+      prospects[prospects.length - 1].probability / 100
+    );
 
     let totalProspect = 0;
     let totalUtility = 0;
     for (let i = 0; i < prospects.length; i++) {
       prospects[i].weightedValue = this.valueFunction(prospects[i].result);
-      prospects[i].weightedsMultiplied = prospects[i].weightedProbability * prospects[i].weightedValue;
-      prospects[i].utility = prospects[i].probability * prospects[i].result / 100;
+      prospects[i].weightedsMultiplied =
+        prospects[i].weightedProbability * prospects[i].weightedValue;
+      prospects[i].utility =
+        (prospects[i].probability * prospects[i].result) / 100;
       totalUtility += prospects[i].utility;
       totalProspect += prospects[i].weightedsMultiplied;
     }
-    
+
     prospects.sort((p1, p2) => {
       return p1.id - p2.id;
     });
@@ -274,72 +313,93 @@ class Calculator extends Component {
   }
 
   dataInput() {
-    const labelClasses = classNames("col-4 overflow-hidden text-nowrap col-sm-12 col-lg-4".split(" "))
-    const inputClasses = classNames("col-8 col-sm-12 col-lg-8".split(" "))
+    const labelClasses = classNames(
+      "col-4 overflow-hidden text-nowrap col-sm-12 col-lg-4".split(" ")
+    );
+    const inputClasses = classNames("col-8 col-sm-12 col-lg-8".split(" "));
     return (
       <div className="mb-3">
         <form className="container" onSubmit={e => e.preventDefault()}>
-          {
-            this.state.prospects.map((item, index) => (
-              <div key={index} className="form-group row mb-5">
-                <div className="col-md">
-                  <div className="row pb-2 pb-sm-0">
-                    <label className={labelClasses}>Result</label>
-                    <div className={inputClasses}>
-                      {this.indexedDecimalInput("prospects", index, "result")}
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md">
-                  <div className="row pb-2 pb-sm-0">
-                    <label className={labelClasses}>Probability</label>
-                    <div className={inputClasses}>
-                      {this.indexedDecimalInput("prospects", index, "probability")}
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md d-xl-block d-none">
-                  <div className="row pb-2 pb-sm-0">
-                    <label className={labelClasses}>Weighted Probability</label>
-                    <div className={inputClasses}>
-                      {this.resultIndexedInput("prospects", index, "weightedProbability")}
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md d-xl-block d-none">
-                  <div className="row pb-2 pb-sm-0">
-                    <label className={labelClasses}>Weighted Value</label>
-                    <div className={inputClasses}>
-                      {this.resultIndexedInput("prospects", index, "weightedValue")}
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md">
-                  <div className="row pb-2 pb-sm-0">
-                    <label className={labelClasses}>Prospect Value</label>
-                    <div className={inputClasses}>
-                      {this.resultIndexedInput("prospects", index, "weightedsMultiplied")}
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md">
-                  <div className="row pb-2 pb-sm-0">
-                    <label className={labelClasses}>Utility Value</label>
-                    <div className={inputClasses}>
-                      {this.resultIndexedInput("prospects", index, "utility")}
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md my-sm-3 my-lg-0 text-right">
-                  <div onClick={() => this.deleteProspect(index)} className="btn btn-danger">
-                    Delete
+          {this.state.prospects.map((item, index) => (
+            <div key={index} className="form-group row mb-5">
+              <div className="col-md">
+                <div className="row pb-2 pb-sm-0">
+                  <label className={labelClasses}>Result</label>
+                  <div className={inputClasses}>
+                    {this.indexedDecimalInput("prospects", index, "result")}
                   </div>
                 </div>
               </div>
-            ))
-          }
+              <div className="col-md">
+                <div className="row pb-2 pb-sm-0">
+                  <label className={labelClasses}>Probability</label>
+                  <div className={inputClasses}>
+                    {this.indexedDecimalInput(
+                      "prospects",
+                      index,
+                      "probability"
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className={classNames("col-md " + this.state.cssShowOnBigScreens)}>
+                <div className="row pb-2 pb-sm-0">
+                  <label className={labelClasses}>Weighted Probability</label>
+                  <div className={inputClasses}>
+                    {this.resultIndexedInput(
+                      "prospects",
+                      index,
+                      "weightedProbability"
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className={classNames("col-md " + this.state.cssShowOnBigScreens)}>
+                <div className="row pb-2 pb-sm-0">
+                  <label className={labelClasses}>Weighted Value</label>
+                  <div className={inputClasses}>
+                    {this.resultIndexedInput(
+                      "prospects",
+                      index,
+                      "weightedValue"
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="col-md">
+                <div className="row pb-2 pb-sm-0">
+                  <label className={labelClasses}>Prospect Value</label>
+                  <div className={inputClasses}>
+                    {this.resultIndexedInput(
+                      "prospects",
+                      index,
+                      "weightedsMultiplied"
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="col-md">
+                <div className="row pb-2 pb-sm-0">
+                  <label className={labelClasses}>Utility Value</label>
+                  <div className={inputClasses}>
+                    {this.resultIndexedInput("prospects", index, "utility")}
+                  </div>
+                </div>
+              </div>
+              <div className="col-md my-sm-3 my-lg-0 text-right">
+                <div
+                  onClick={() => this.deleteProspect(index)}
+                  className="btn btn-danger"
+                >
+                  Delete
+                </div>
+              </div>
+            </div>
+          ))}
 
-          <button onClick={this.addResult} className="btn btn-primary">Add Event</button>
+          <button onClick={this.addResult} className="btn btn-primary">
+            Add Event
+          </button>
         </form>
       </div>
     );
@@ -349,8 +409,10 @@ class Calculator extends Component {
   // automatically add a thing that brings the probabilities to zero
 
   dataResults() {
-    const labelClasses = classNames("col-4 overflow-hidden text-nowrap col-sm-12 col-lg-4".split(" "))
-    const inputClasses = classNames("col-8 col-sm-12 col-lg-8".split(" "))
+    const labelClasses = classNames(
+      "col-4 overflow-hidden text-nowrap col-sm-12 col-lg-4".split(" ")
+    );
+    const inputClasses = classNames("col-8 col-sm-12 col-lg-8".split(" "));
 
     return (
       <div>
@@ -381,34 +443,34 @@ class Calculator extends Component {
   settings() {
     return (
       <div>
-        <h3 onClick={this.toggleSettings} className="btn-link cursor-pointer">Settings</h3>
-        <form className={classNames({"d-none": !this.state.showSettings})}>
+        <h5 onClick={this.toggleSettings} className="mt-n4 mb-4 btn-link cursor-pointer">
+          Settings
+        </h5>
+        <form className={classNames({ "d-none": !this.state.showSettings })}>
           <div className="form-group row">
             <label className="col-4 col-form-label">Gain Power</label>
-            <div className="col-8">
-              {this.decimalInput("gainPower")}
-            </div>
+            <div className="col-8">{this.decimalInput("gainPower")}</div>
           </div>
           <div className="form-group row">
             <label className="col-4 col-form-label">Loss Power</label>
-            <div className="col-8">
-              {this.decimalInput("lossPower")}
-            </div>
+            <div className="col-8">{this.decimalInput("lossPower")}</div>
           </div>
           <div className="form-group row">
             <label className="col-4 col-form-label">Loss Aversion</label>
-            <div className="col-8">
-              {this.decimalInput("lossAversion")}
-            </div>
+            <div className="col-8">{this.decimalInput("lossAversion")}</div>
           </div>
           <div className="form-group row">
-            <label className="col-4 col-form-label">Gain Probability Weighting</label>
+            <label className="col-4 col-form-label">
+              Gain Probability Weighting
+            </label>
             <div className="col-8">
               {this.decimalInput("gainProbabilityWeighting")}
             </div>
           </div>
           <div className="form-group row">
-            <label className="col-4 col-form-label">Loss Probability Weighting</label>
+            <label className="col-4 col-form-label">
+              Loss Probability Weighting
+            </label>
             <div className="col-8">
               {this.decimalInput("lossProbabilityWeighting")}
             </div>
@@ -418,6 +480,54 @@ class Calculator extends Component {
     );
   }
 
+  variableExplanations() {
+    return (
+      <div>
+        <h3>Result</h3>
+        <p>
+          The result is the hypothetical amount that would be gained or lost if the probability occurs.
+        </p>
+
+        <h3>Probability</h3>
+        <p>
+          The probability is the chance that you recieve the result out of 100.
+        </p>
+
+        <h3 classNames={classNames(this.state.cssShowOnBigScreens)}>Weighted Probability</h3>
+        <p>
+          This is the way that the model, and hopefully your mind, view the probability. It is weighted to conform to several known human biases.
+        </p>
+
+        <h3 classNames={classNames(this.state.cssShowOnBigScreens)}>Weighted Value</h3>
+        <p>
+          This is the way that the model, and hopefully your mind, view the value. It is weighted to conform to several known human biases and better follow the way humans view money (or anything else).
+        </p>
+
+        <h3>Prospect Value</h3>
+        <p>
+          The prospect value is the predicted amount that this possibility will make you choose the decision. For example, if the prospect value is 30, that one possibility is increasing the likelihood that you take the risk. If the prospect value is -20, that possibility decreases the likelihood of taking the risk.
+        </p>
+
+        <h3>Utility Value</h3>
+        <p>
+          Utility theory is the previous economic model for human decision making. It is provided here for comparison and serves the same general purpose as prospect value. The higher the value, the more the individual possibility increases the attractiveness of the decision overall.
+        </p>
+
+        {/* add in the other ones that might show. Make a state variable that has their css classes and apply it to the explanations. */}
+
+        <h3>Total Prospect</h3>
+        <p>
+          The total prospect is the sum of the prospect values of all the possibilities. The higher it is, the more likely you would be predicted to take that bet.
+        </p>
+
+        <h3>Total Utility</h3>
+        <p>
+          The total utility is the sum of the utility values of all the possibilities. The higher it is, the more likely you would be predicted by utility theory to take that bet.
+        </p>
+      </div>
+    )
+  }
+
   render() {
     return (
       <div className="container-fluid">
@@ -425,6 +535,8 @@ class Calculator extends Component {
         {this.dataInput()}
         {this.dataResults()}
         {this.settings()}
+        {this.variableExplanations()}
+        <div className="mb-5"></div>
       </div>
     );
   }
