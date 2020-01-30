@@ -58,6 +58,12 @@ class Footer extends Component {
                 <li>
                   <a className="text-light" href="https://www.amazon.com/Thinking-Fast-Slow-Daniel-Kahneman-ebook/dp/B00555X8OA">Thinking Fast and Slow</a>
                 </li>
+                <li>
+                  <a className="text-light" href="https://personal.eur.nl/wakker/pdfspubld/97.3optcptjbdm.pdf">Cumulative Paper</a>
+                </li>
+
+
+                
               </ul>
             </div>
           </div>

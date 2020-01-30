@@ -67,11 +67,13 @@ class Explanation extends Component {
           To determine the total prospect value (how good a gamble is percieved as), you would map each probability through a function <Formula tex={`${"\\pi(p)"}`} /> and the possible result of each function through a separate function <Formula tex={`${"v(x)"}`} />.
           Probability weighting biases are accounted for with the pi function which should follow a curve like this. {/* insert a graph */}
           However, humans consider losses separately from gains, so we should define two weighting functions <Formula tex={`${"w^+(p)"}`} /> for gains and <Formula tex={`${"w^-(p)"}`} /> for losses. This means that the probability weight (<Formula tex={`${"\\pi"}`} />) function looks like <Formula notInline={true} tex={`${'\\pi(p) =\\begin{cases}w^+(p),  & \\text{if $x$ > 0} \\\\0,  & \\text{if $x$ = 0} \\\\w^-(p), & \\text{if $x$ < 0}\\end{cases}'}`} />
-          <Line data={probabilityFunctionData} />
+          where x is the value gained or lost
+          <Line data={probabilityFunctionData} /> 
 
           To determine how attractive a risk is, all of the prospect values multiplied by their weighted probabilities are added together, and the higher the value is the more attractive the decision is. <Formula tex={`${"x"}`} /> represents the value of each possibility and <Formula tex={`${"p"}`} /> is the probability. <Formula tex={`${"n"}`} /> represents how many different possibilities you are considering. The formula to sum the prospects is <Formula notInline tex={`${"\\sum_{i=1}^{n}\\pi(p_i)v(x_i)"}`} /> or <Formula notInline tex={`${"\\pi(p_1)v(x_1) + \\pi(p_2)v(x_2) + ... + \\pi(p_n)v(x_n)"}`} /> 
           
-
+          However, this current model glosses over the important fact that humans view possibilities relative to the other possibilities. To account for this, we can consider each probability relative to the other probabilities by adding together all of the better or worse probabilities. {/* Make sure this is right */}
+          For simplicity, the first thing we will do is sort all of the different possibilities by their potential outcomes.
 
         </p>
 
