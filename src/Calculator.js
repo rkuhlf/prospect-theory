@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import classNames from "classnames";
 import ScrollLink from "./ScrollLink";
+import {positiveWeighting, negativeWeighting, valueFunction, positiveValue, lossValue} from "./ProspectMath";
 
 class Calculator extends Component {
   constructor(props) {
@@ -493,12 +494,12 @@ class Calculator extends Component {
           The probability is the chance that you recieve the result out of 100.
         </p>
 
-        <h3  id="weighted-probability-explanation" classNames={classNames(this.state.cssShowOnBigScreens)}>Weighted Probability</h3>
+        <h3  id="weighted-probability-explanation" className={classNames(this.state.cssShowOnBigScreens)}>Weighted Probability</h3>
         <p>
           This is the way that the model, and hopefully your mind, view the probability. It is weighted to conform to several known human biases.
         </p>
 
-        <h3  id="weighted-value-explanation" classNames={classNames(this.state.cssShowOnBigScreens)}>Weighted Value</h3>
+        <h3  id="weighted-value-explanation" className={classNames(this.state.cssShowOnBigScreens)}>Weighted Value</h3>
         <p>
           This is the way that the model, and hopefully your mind, view the value. It is weighted to conform to several known human biases and better follow the way humans view money (or anything else).
         </p>
