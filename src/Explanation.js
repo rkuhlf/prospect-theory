@@ -3,37 +3,99 @@ import Article from "./Article";
 import { Fraction, toTex } from 'algebra.js';
 import Formula from "./Formula";
 // use http://detexify.kirelabs.org/classify.html to translate to latex
-import { Line } from 'react-chartjs-2';
-
+import { Line } from 'react-chartjs-2'; // switch everything to desmos https://dzone.com/articles/generating-straight-lines-with-the-desmos-api
+import {positiveWeighting, negativeWeighting, valueFunction, positiveValue, lossValue} from "./ProspectMath";
 
 
 class Explanation extends Component {
 
   render() {
+    let labels = []
+    for (let p = 0; p <= 100; p += 1) {
+      labels.push(p);
+    }
+
+    let data = [];
+
+    for (let i = 0; i < labels.length; i++) {
+      data.push(positiveWeighting(labels[i] / 100) * 100);
+    }
+    let data2 = [];
+
+    for (let i = 0; i < labels.length; i++) {
+      data2.push(negativeWeighting(labels[i] / 100) * 100);
+    }
+
+    let primaryColor = "rgb(30, 47, 109)";
+    let secondaryColor = "rgb(146, 20, 12)";
+    let transparentPrimary = "rgba(30, 47, 109, 0.3)";
+    
     const probabilityFunctionData = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      labels: labels,
       datasets: [
         {
-          label: 'Probability Weighting Function',
+          label: 'Gain Weighting',
           fill: false,
           lineTension: 0.1,
-          backgroundColor: 'rgb(30, 47, 109)',
-          borderColor: 'rgb(30, 47, 109)',
+          backgroundColor: primaryColor,
+          borderColor: primaryColor,
           borderCapStyle: 'butt',
           borderDash: [],
           borderDashOffset: 0.0,
           borderJoinStyle: 'miter',
-          pointBorderColor: 'rgb(30, 47, 109)',
+          pointBorderColor: primaryColor,
           pointBackgroundColor: 'rgb(120, 147, 209)',
           pointBorderWidth: 1,
           pointHoverRadius: 5,
-          pointHoverBackgroundColor: 'rgb(30, 47, 109)',
+          pointHoverBackgroundColor: primaryColor,
           pointHoverBorderColor: 'rgb(120, 147, 209)',
           pointHoverBorderWidth: 2,
           pointRadius: 1,
           pointHitRadius: 10,
-          data: [65, 59, 80, 81, 56, 55, 40]
-        } // make it curved
+          data: data
+        },
+        {
+          label: 'Loss Weighting',
+          fill: false,
+          lineTension: 0.1,
+          backgroundColor: secondaryColor,
+          borderColor: secondaryColor,
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: secondaryColor,
+          pointBackgroundColor: 'rgb(120, 147, 209)',
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: secondaryColor,
+          pointHoverBorderColor: 'rgb(120, 147, 209)',
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          data: data2
+        },
+        {
+          label: 'Utility Weighting',
+          fill: false,
+          lineTension: 0.1,
+          backgroundColor: transparentPrimary,
+          borderColor: transparentPrimary,
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: transparentPrimary,
+          pointBackgroundColor: 'rgba(120, 147, 209, 0.3)',
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: transparentPrimary,
+          pointHoverBorderColor: 'rgba(120, 147, 209, 0.3)',
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          data: labels
+        }
       ]
     }
 
@@ -68,7 +130,6 @@ class Explanation extends Component {
           Probability weighting biases are accounted for with the pi function which should follow a curve like this. {/* insert a graph */}
           However, humans consider losses separately from gains, so we should define two weighting functions <Formula tex={`${"w^+(p)"}`} /> for gains and <Formula tex={`${"w^-(p)"}`} /> for losses. This means that the probability weight (<Formula tex={`${"\\pi"}`} />) function looks like <Formula notInline={true} tex={`${'\\pi(p) =\\begin{cases}w^+(p),  & \\text{if $x$ > 0} \\\\0,  & \\text{if $x$ = 0} \\\\w^-(p), & \\text{if $x$ < 0}\\end{cases}'}`} />
           where x is the value gained or lost
-          <Line data={probabilityFunctionData} /> 
 
           To determine how attractive a risk is, all of the prospect values multiplied by their weighted probabilities are added together, and the higher the value is the more attractive the decision is. <Formula tex={`${"x"}`} /> represents the value of each possibility and <Formula tex={`${"p"}`} /> is the probability. <Formula tex={`${"n"}`} /> represents how many different possibilities you are considering. The formula to sum the prospects is <Formula notInline tex={`${"\\sum_{i=1}^{n}\\pi(p_i)v(x_i)"}`} /> or <Formula notInline tex={`${"\\pi(p_1)v(x_1) + \\pi(p_2)v(x_2) + ... + \\pi(p_n)v(x_n)"}`} /> 
           
@@ -88,13 +149,23 @@ class Explanation extends Component {
 
         <h3>The Specifics of the Model</h3>
         <p>
-          So how do we actually go about calculating the weighted probability and the weighted value? Well, we have some idea what we want our probability graph to look like. {/* Explain biases and what they mean for the graph */ } So it should end up looking something like this. { /* show graph */ }
+          So how do we actually go about calculating the weighted probability and the weighted value? Well, we have some idea what we want our probability graph to look like. {/* Explain biases and what they mean for the graph */ }. Additionally, we'll want to give ourselves the flexibility of weighting negative and positive differently. So it should end up looking something like this. 
+          <Line data={probabilityFunctionData} /> 
           To give us a graph with this shape, we can use the formula 
+          <Formula notInline tex={`${"w^+(p) = \\frac{p^\\gamma}{(p^\\gamma + (1-p) ^ \\gamma)^{1/\\gamma}}"}`} /> 
+          In this formula the <Formula  tex={`${"\\gamma"}`} /> (gamma) is a constant that we can adjust to make the formula match human behavior. We'll want to use a similar formula for losses, but with a different constant variable: <Formula tex={`${"\\delta"}`} /> (delta). 
+          <Formula notInline tex={`${"w^-(p) = \\frac{p^\\delta}{(p^\\delta + (1-p) ^ \\delta)^{1/\\delta}}"}`} />
+          {/*explain why this formula works*/}
+        </p>
+        <p>
           Now we can develop our value mapping function. Increasing value has diminishing returns, so the as the possible gain gets larger and larger, our desire for that gain doesn't grow at quite the same rate and begins to drop off. 
+          <Formula notInline tex={`${"l(x) =\\begin{cases} x^\\alpha,  & \\text{if $\\alpha$ > 0} \\\\ ln(x),  & \\text{if $\\alpha$ = 0} \\\\ 1-(1+x)^\\alpha, & \\text{if $\\alpha$ < 0}\\end{cases}"}`} />
 
           We'll also want to multiply our loss function by a loss aversion constant.
+          <Formula notInline tex={`${"l(x) =\\begin{cases} \\lambda * -(-x)^\\beta,  & \\text{if $\\beta$ > 0} \\\\ \\lambda*-ln(-x),  & \\text{if $\\beta$ = 0} \\\\ \\lambda * [(1-x)^\\beta - 1], & \\text{if $\\beta$ < 0}\\end{cases}"}`} /> We can determine what each of these possible functions are based on the gain weighting function. We need to make sure that the input is always positive, so we will multiply x by negative one, but we also need the output to be negative (because it is a loss) so we multiply the whole function by negative one.
+
+          The final graph then looks something like this.
         </p>
-        
       </Article>
     );
   }

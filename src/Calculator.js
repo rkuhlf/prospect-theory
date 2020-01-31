@@ -3,6 +3,8 @@ import classNames from "classnames";
 import ScrollLink from "./ScrollLink";
 import {positiveWeighting, negativeWeighting, valueFunction, positiveValue, lossValue} from "./ProspectMath";
 
+// allow typing negatives
+
 class Calculator extends Component {
   constructor(props) {
     super(props);
@@ -42,63 +44,6 @@ class Calculator extends Component {
 
   componentDidMount() {
     this.recalculateState();
-  }
-
-  // Math
-  positiveWeighting(p) {
-    let gamma = this.state.gainProbabilityWeighting;
-
-    const numerator = Math.pow(p, gamma);
-    const denominator = Math.pow(numerator + Math.pow(1 - p, gamma), 1 / gamma);
-
-    return numerator / denominator;
-  }
-
-  negativeWeighting(p) {
-    let delta = this.state.lossProbabilityWeighting;
-    const numerator = Math.pow(p, delta);
-    const denominator = Math.pow(numerator + Math.pow(1 - p, delta), 1 / delta);
-
-    return numerator / denominator;
-  }
-
-  valueFunction(x) {
-    if (x > 0) {
-      return this.positiveValue(x);
-    } else if (x === 0) {
-      return 0;
-    } else {
-      return this.state.lossAversion * this.lossValue(x);
-    }
-  }
-
-  positiveValue(x) {
-    let alpha = this.state.gainPower;
-
-    if (alpha > 0) {
-      return Math.pow(x, alpha);
-    } else if (alpha === 0) {
-      return this.getNaturalLog(x);
-    } else {
-      return 1 - Math.pow(1 + x, alpha);
-    }
-  }
-
-  lossValue(x) {
-    let beta = this.state.lossPower;
-
-    if (beta > 0) {
-      return -Math.pow(-x, beta);
-    } else if (beta === 0) {
-      return -this.getNaturalLog(-x);
-    } else {
-      return Math.pow(1 - x, beta) - 1;
-    }
-  }
-
-  getNaturalLog(x) {
-    let euler = Math.exp(1);
-    return Math.log(x) / Math.log(euler);
   }
 
   handleChange(e, variable) {
@@ -253,8 +198,9 @@ class Calculator extends Component {
 
     if (positiveStart !== 0) {
       // if there are negative possibilities
-      prospects[0].weightedProbability = this.negativeWeighting(
-        prospects[0].probability / 100
+      prospects[0].weightedProbability = negativeWeighting(
+        prospects[0].probability / 100,
+        this.state.lossProbabilityWeighting
       );
 
       for (let i = 1; i < positiveStart; i++) {
@@ -265,8 +211,8 @@ class Calculator extends Component {
         let mostProbSum = allProbSum - prospects[i].probability;
 
         prospects[i].weightedProbability =
-          this.negativeWeighting(allProbSum / 100) -
-          this.negativeWeighting(mostProbSum / 100);
+          negativeWeighting(allProbSum / 100, this.state.lossProbabilityWeighting) -
+          negativeWeighting(mostProbSum / 100, this.state.lossProbabilityWeighting);
       }
     }
 
@@ -278,20 +224,20 @@ class Calculator extends Component {
       let mostProbSum = allProbSum - prospects[i].probability;
 
       prospects[i].weightedProbability =
-        this.positiveWeighting(allProbSum / 100) -
-        this.positiveWeighting(mostProbSum / 100);
+        positiveWeighting(allProbSum / 100, this.state.gainProbabilityWeighting) -
+        positiveWeighting(mostProbSum / 100, this.state.gainProbabilityWeighting);
     }
 
     prospects[
       prospects.length - 1
-    ].weightedProbability = this.positiveWeighting(
-      prospects[prospects.length - 1].probability / 100
+    ].weightedProbability = positiveWeighting(
+      prospects[prospects.length - 1].probability / 100, this.state.gainProbabilityWeighting
     );
 
     let totalProspect = 0;
     let totalUtility = 0;
     for (let i = 0; i < prospects.length; i++) {
-      prospects[i].weightedValue = this.valueFunction(prospects[i].result);
+      prospects[i].weightedValue = valueFunction(prospects[i].result, this.state.lossAversion, this.state.gainProbabilityWeighting, this.state.lossProbabilityWeighting);
       prospects[i].weightedsMultiplied =
         prospects[i].weightedProbability * prospects[i].weightedValue;
       prospects[i].utility =
@@ -303,6 +249,8 @@ class Calculator extends Component {
     prospects.sort((p1, p2) => {
       return p1.id - p2.id;
     });
+
+    console.log(prospects);
 
     this.setState({
       prospects,

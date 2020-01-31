@@ -1,6 +1,5 @@
-// Math
-export function positiveWeighting(p) {
-  let gamma = this.state.gainProbabilityWeighting;
+export function positiveWeighting(p, gamma) {
+  let gamma = gamma || 0.61;
 
   const numerator = Math.pow(p, gamma);
   const denominator = Math.pow(numerator + Math.pow(1 - p, gamma), 1 / gamma);
@@ -8,21 +7,22 @@ export function positiveWeighting(p) {
   return numerator / denominator;
 }
 
-export function negativeWeighting(p) {
-  let delta = this.state.lossProbabilityWeighting;
+export function negativeWeighting(p, delta) {
+  let delta = delta || 0.69;
   const numerator = Math.pow(p, delta);
   const denominator = Math.pow(numerator + Math.pow(1 - p, delta), 1 / delta);
 
   return numerator / denominator;
 }
 
-export function valueFunction(x) {
+export function valueFunction(x, lambda, gamma, delta) {
+  let lambda = lambda || 2.25;
   if (x > 0) {
-    return this.positiveValue(x);
+    return positiveValue(x, gamma);
   } else if (x === 0) {
     return 0;
   } else {
-    return this.state.lossAversion * this.lossValue(x);
+    return lambda * lossValue(x, delta); // calling this function might not work
   }
 }
 
