@@ -61,7 +61,7 @@ class Explanation extends Component {
           The certainty and possibility effects are another example of mis-weighting probabilities. The possibility effect states that an increase in probability from 0% to 5% (making the event possible) will be treated with much more weight than an increase from 45% to 50%. The certainty effect is similar, stating that an increase from 95% to 100% (making it certain) will be treated differently from a change from 50% to 55% (or any other probabilities far from the extremes).
         </p>
 
-        <h3 id="math-model">The Mathematical Model</h3>
+        <h3 id="math-model">The Theoretical Model</h3>
         <p>
           So how does prospect theory attempt to encapsulate all of these human biases into a mathematical model?
           To determine the total prospect value (how good a gamble is percieved as), you would map each probability through a function <Formula tex={`${"\\pi(p)"}`} /> and the possible result of each function through a separate function <Formula tex={`${"v(x)"}`} />.
@@ -73,10 +73,27 @@ class Explanation extends Component {
           To determine how attractive a risk is, all of the prospect values multiplied by their weighted probabilities are added together, and the higher the value is the more attractive the decision is. <Formula tex={`${"x"}`} /> represents the value of each possibility and <Formula tex={`${"p"}`} /> is the probability. <Formula tex={`${"n"}`} /> represents how many different possibilities you are considering. The formula to sum the prospects is <Formula notInline tex={`${"\\sum_{i=1}^{n}\\pi(p_i)v(x_i)"}`} /> or <Formula notInline tex={`${"\\pi(p_1)v(x_1) + \\pi(p_2)v(x_2) + ... + \\pi(p_n)v(x_n)"}`} /> 
           
           However, this current model glosses over the important fact that humans view possibilities relative to the other possibilities. To account for this, we can consider each probability relative to the other probabilities by adding together all of the better or worse probabilities. {/* Make sure this is right */}
-          For simplicity, the first thing we will do is sort all of the different possibilities by their potential outcomes.
-
+          For simplicity, the first thing we will do is sort all of the different possibilities by their potential outcomes. This leaves us with a list of possibilities that follow the following equation. <Formula notInline tex={`${"x_1 \\leq x_2 \\leq ... \\leq x_k \\leq 0 \\leq x_{k+1} \\leq x_{k+2} \\leq ... \\leq x_n"}`} /> 
+          This means that <Formula tex={`${"x_k"}`} /> is the last negative value and <Formula tex={`${"x_n"}`} /> is the biggest positive value. The next step the model considers is what the probability of the best case loss is. This is calculated as follows.
+          <Formula notInline tex={`${"w^-(p_1 + p_2 + ... + p_k) - w^-(p_1 + p_2 + ... + p_{k - 1})"}`} />
+          This same idea can be applied to all of the possibilities, but for the worst case scenario (<Formula tex={`${"x_1"}`} />) it can be simplified to just <Formula tex={`${"w^-(p_1)"}`} />. To make it easier to plug it back into our summation equation, let's set the result of our calculation to a new variable <Formula tex={`${"\\pi^-_i"}`} />. This means that we can say
+          <Formula notInline tex={`${"\\pi^-_1 = w^-(p^1), \\\\ \\pi_i^- = w^-(p_1 + ... + p_i) - w^-(p_1 + ... + w^-(p_1 + ... p_{i-1})) \\\\ 2 \\leq i \\leq k"}`} />
+          For the positive portion of the possibilities we follow a similar principle.
+          <Formula notInline tex={`${"\\pi^+_n = w^+(p^n), \\\\ \\pi_i^+ = w^+(p_i + ... + p_n) - w^+(p_{i + 1} + ... +  p_{n}) \\\\ k + 1 \\leq i \\leq n-1"}`} />
+          However this time we can consider the best case scenario by itself, and as each possible outcome improves its relation to other possibilities decreases. Now we can write our final formula as this
+          <Formula notInline tex={`${"\\sum_{i=1}^k \\pi^-v(x_i) + \\sum_{i=k+1}^n \\pi^+v(x_i)"}`} />
+          However, we're not quite done, because we still need to figure out how our value mapping function should look. Again, humans judge gains differently from losses, so we'll define a function <Formula tex={`${"g(x)"}`} /> for gains and <Formula tex={`${"l(x)"}`} /> for losses. Then our definition of <Formula tex={`${"v"}`} /> becomes 
+          <Formula notInline={true} tex={`${'v(x) =\\begin{cases}g(x),  & \\text{if $x$ > 0} \\\\0,  & \\text{if $x$ = 0} \\\\l(x), & \\text{if $x$ < 0}\\end{cases}'}`} />
         </p>
 
+        <h3>The Specifics of the Model</h3>
+        <p>
+          So how do we actually go about calculating the weighted probability and the weighted value? Well, we have some idea what we want our probability graph to look like. {/* Explain biases and what they mean for the graph */ } So it should end up looking something like this. { /* show graph */ }
+          To give us a graph with this shape, we can use the formula 
+          Now we can develop our value mapping function. Increasing value has diminishing returns, so the as the possible gain gets larger and larger, our desire for that gain doesn't grow at quite the same rate and begins to drop off. 
+
+          We'll also want to multiply our loss function by a loss aversion constant.
+        </p>
         
       </Article>
     );
