@@ -5,6 +5,7 @@ import Formula from "./Formula";
 // use http://detexify.kirelabs.org/classify.html to translate to latex
 import { Line } from 'react-chartjs-2'; // switch everything to desmos https://dzone.com/articles/generating-straight-lines-with-the-desmos-api
 import {positiveWeighting, negativeWeighting, valueFunction, positiveValue, lossValue} from "./ProspectMath";
+import Desmos from "./Desmos";
 
 
 class Explanation extends Component {
