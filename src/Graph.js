@@ -11,11 +11,14 @@ class Graph extends Component {
       expressionsCollapsed: true
     });
     calculator.setExpression({ id: 0, latex: this.props.func });
+    if (this.props.bounds) {
+      calculator.setMathBounds(this.props.bounds);
+    }
   }
 
   render() {
     return (
-      <div id={this.props.id} className="shadow-sm w-100 vh-100">
+      <div id={this.props.id} className="my-2 shadow-sm w-100 vh-100">
         
       </div>
     );

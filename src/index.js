@@ -9,6 +9,14 @@ import TopNav from './TopNav';
 import Footer from './Footer';
 import MetaTags from 'react-meta-tags';
 import './style.scss';
+// add support for og metadata tags
+// use this https://www.heymeta.com/url/framer.com
+// add enriched result faq (for explanation) https://developers.google.com/search/docs/data-types/faqpage
+// add enriched result for text to speech https://developers.google.com/search/docs/data-types/speakable
+// add enriched result searchbox https://developers.google.com/search/docs/data-types/sitelinks-searchbox
+// figure out why it takes so long to load
+// add favicon https://support.google.com/webmasters/answer/9290858?hl=en&ref_topic=9456381
+// make mobile friendly
 
 class App extends Component {
   render() {

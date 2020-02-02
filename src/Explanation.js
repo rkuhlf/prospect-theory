@@ -61,7 +61,10 @@ class Explanation extends Component {
         <h3>The Specifics of the Model</h3>
         <p>
           So how do we actually go about calculating the weighted probability and the weighted value? Well, we have some idea what we want our probability graph to look like. {/* Explain biases and what they mean for the graph */ }. Additionally, we'll want to give ourselves the flexibility of weighting negative and positive differently. So it should end up looking something like this. 
-          <Graph id="probability-function" func="" /> 
+          
+        </p>
+        <Graph bounds={{left: 0, right: 1, bottom: 0, top: 1}} id="probability-function" func="y = x^{0.61} / ((x ^ {0.61} + (1-x) ^ {0.61})^{1/0.61})" />
+        <p>
           To give us a graph with this shape, we can use the formula 
           <Formula notInline tex={`${"w^+(p) = \\frac{p^\\gamma}{(p^\\gamma + (1-p) ^ \\gamma)^{1/\\gamma}}"}`} /> 
           In this formula the <Formula  tex={`${"\\gamma"}`} /> (gamma) is a constant that we can adjust to make the formula match human behavior. We'll want to use a similar formula for losses, but with a different constant variable: <Formula tex={`${"\\delta"}`} /> (delta). 
@@ -78,7 +81,7 @@ class Explanation extends Component {
           The final graph then looks something like this.
           
         </p>
-        <Graph id="gain-value-function" func="g(x) = \{ x > 0: 0, x < 0: 2x\}"/>
+        <Graph id="gain-value-function" func="g(x) = \{ x > 0: x^{0.88}, x < 0: 2.25 * -(-x)^{0.88}\}"/>
 
         <p>
           text under graph
