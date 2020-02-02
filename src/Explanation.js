@@ -3,103 +3,13 @@ import Article from "./Article";
 import { Fraction, toTex } from 'algebra.js';
 import Formula from "./Formula";
 // use http://detexify.kirelabs.org/classify.html to translate to latex
-import { Line } from 'react-chartjs-2'; // switch everything to desmos https://dzone.com/articles/generating-straight-lines-with-the-desmos-api
-import {positiveWeighting, negativeWeighting, valueFunction, positiveValue, lossValue} from "./ProspectMath";
 import Graph from "./Graph";
+
 
 
 class Explanation extends Component {
 
   render() {
-    let labels = []
-    for (let p = 0; p <= 100; p += 1) {
-      labels.push(p);
-    }
-
-    let data = [];
-
-    for (let i = 0; i < labels.length; i++) {
-      data.push(positiveWeighting(labels[i] / 100) * 100);
-    }
-    let data2 = [];
-
-    for (let i = 0; i < labels.length; i++) {
-      data2.push(negativeWeighting(labels[i] / 100) * 100);
-    }
-
-    let primaryColor = "rgb(30, 47, 109)";
-    let secondaryColor = "rgb(146, 20, 12)";
-    let transparentPrimary = "rgba(30, 47, 109, 0.3)";
-    
-    const probabilityFunctionData = {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Gain Weighting',
-          fill: false,
-          lineTension: 0.1,
-          backgroundColor: primaryColor,
-          borderColor: primaryColor,
-          borderCapStyle: 'butt',
-          borderDash: [],
-          borderDashOffset: 0.0,
-          borderJoinStyle: 'miter',
-          pointBorderColor: primaryColor,
-          pointBackgroundColor: 'rgb(120, 147, 209)',
-          pointBorderWidth: 1,
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: primaryColor,
-          pointHoverBorderColor: 'rgb(120, 147, 209)',
-          pointHoverBorderWidth: 2,
-          pointRadius: 1,
-          pointHitRadius: 10,
-          data: data
-        },
-        {
-          label: 'Loss Weighting',
-          fill: false,
-          lineTension: 0.1,
-          backgroundColor: secondaryColor,
-          borderColor: secondaryColor,
-          borderCapStyle: 'butt',
-          borderDash: [],
-          borderDashOffset: 0.0,
-          borderJoinStyle: 'miter',
-          pointBorderColor: secondaryColor,
-          pointBackgroundColor: 'rgb(120, 147, 209)',
-          pointBorderWidth: 1,
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: secondaryColor,
-          pointHoverBorderColor: 'rgb(120, 147, 209)',
-          pointHoverBorderWidth: 2,
-          pointRadius: 1,
-          pointHitRadius: 10,
-          data: data2
-        },
-        {
-          label: 'Utility Weighting',
-          fill: false,
-          lineTension: 0.1,
-          backgroundColor: transparentPrimary,
-          borderColor: transparentPrimary,
-          borderCapStyle: 'butt',
-          borderDash: [],
-          borderDashOffset: 0.0,
-          borderJoinStyle: 'miter',
-          pointBorderColor: transparentPrimary,
-          pointBackgroundColor: 'rgba(120, 147, 209, 0.3)',
-          pointBorderWidth: 1,
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: transparentPrimary,
-          pointHoverBorderColor: 'rgba(120, 147, 209, 0.3)',
-          pointHoverBorderWidth: 2,
-          pointRadius: 1,
-          pointHitRadius: 10,
-          data: labels
-        }
-      ]
-    }
-
     return (
       <Article title="Explanation" scrollLinks={["Explanation", "Loss Aversion", "Mis-Weighting Probabilities", "Certainty Effect"]} scrollIds={["title", "loss-aversion", "probability-weighting", "certainty-effect"]}>
         <p>
@@ -151,7 +61,7 @@ class Explanation extends Component {
         <h3>The Specifics of the Model</h3>
         <p>
           So how do we actually go about calculating the weighted probability and the weighted value? Well, we have some idea what we want our probability graph to look like. {/* Explain biases and what they mean for the graph */ }. Additionally, we'll want to give ourselves the flexibility of weighting negative and positive differently. So it should end up looking something like this. 
-          <Line data={probabilityFunctionData} /> 
+          <Graph id="probability-function" func="" /> 
           To give us a graph with this shape, we can use the formula 
           <Formula notInline tex={`${"w^+(p) = \\frac{p^\\gamma}{(p^\\gamma + (1-p) ^ \\gamma)^{1/\\gamma}}"}`} /> 
           In this formula the <Formula  tex={`${"\\gamma"}`} /> (gamma) is a constant that we can adjust to make the formula match human behavior. We'll want to use a similar formula for losses, but with a different constant variable: <Formula tex={`${"\\delta"}`} /> (delta). 
@@ -160,7 +70,7 @@ class Explanation extends Component {
         </p>
         <p>
           Now we can develop our value mapping function. Increasing value has diminishing returns, so the as the possible gain gets larger and larger, our desire for that gain doesn't grow at quite the same rate and begins to drop off. 
-          <Formula notInline tex={`${"l(x) =\\begin{cases} x^\\alpha,  & \\text{if $\\alpha$ > 0} \\\\ ln(x),  & \\text{if $\\alpha$ = 0} \\\\ 1-(1+x)^\\alpha, & \\text{if $\\alpha$ < 0}\\end{cases}"}`} />
+          <Formula notInline tex={`${"g(x) =\\begin{cases} x^\\alpha,  & \\text{if $\\alpha$ > 0} \\\\ ln(x),  & \\text{if $\\alpha$ = 0} \\\\ 1-(1+x)^\\alpha, & \\text{if $\\alpha$ < 0}\\end{cases}"}`} />
 
           We'll also want to multiply our loss function by a loss aversion constant.
           <Formula notInline tex={`${"l(x) =\\begin{cases} \\lambda * -(-x)^\\beta,  & \\text{if $\\beta$ > 0} \\\\ \\lambda*-ln(-x),  & \\text{if $\\beta$ = 0} \\\\ \\lambda * [(1-x)^\\beta - 1], & \\text{if $\\beta$ < 0}\\end{cases}"}`} /> We can determine what each of these possible functions are based on the gain weighting function. We need to make sure that the input is always positive, so we will multiply x by negative one, but we also need the output to be negative (because it is a loss) so we multiply the whole function by negative one.
@@ -168,7 +78,7 @@ class Explanation extends Component {
           The final graph then looks something like this.
           
         </p>
-        <Graph />
+        <Graph id="gain-value-function" func="g(x) = \{ x > 0: 0, x < 0: 2x\}"/>
 
         <p>
           text under graph

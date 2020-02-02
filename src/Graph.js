@@ -2,24 +2,20 @@ import React, {Component} from "react";
 
 
 class Graph extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
-    console.log(window.Desmos, "while test");
-
-    var elt = document.getElementById('test');
+    var elt = document.getElementById(this.props.id);
     // Create a new blank calculator and display it in the div
-    console.log(window.Desmos);
-    var calculator = window.Desmos.Calculator(elt);
-    calculator.setExpression({ id: 'graph1', latex: 'y=x^2' });
+
+    var calculator = window.Desmos.Calculator(elt, {
+      border: false,
+      expressionsCollapsed: true
+    });
+    calculator.setExpression({ id: 0, latex: this.props.func });
   }
 
   render() {
-    console.log("rendering");
     return (
-      <div id="test" className="w-100 vh-100">
+      <div id={this.props.id} className="shadow-sm w-100 vh-100">
         
       </div>
     );
