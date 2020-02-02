@@ -5,7 +5,7 @@ import Formula from "./Formula";
 // use http://detexify.kirelabs.org/classify.html to translate to latex
 import { Line } from 'react-chartjs-2'; // switch everything to desmos https://dzone.com/articles/generating-straight-lines-with-the-desmos-api
 import {positiveWeighting, negativeWeighting, valueFunction, positiveValue, lossValue} from "./ProspectMath";
-import Desmos from "./Desmos";
+import Graph from "./Graph";
 
 
 class Explanation extends Component {
@@ -166,6 +166,12 @@ class Explanation extends Component {
           <Formula notInline tex={`${"l(x) =\\begin{cases} \\lambda * -(-x)^\\beta,  & \\text{if $\\beta$ > 0} \\\\ \\lambda*-ln(-x),  & \\text{if $\\beta$ = 0} \\\\ \\lambda * [(1-x)^\\beta - 1], & \\text{if $\\beta$ < 0}\\end{cases}"}`} /> We can determine what each of these possible functions are based on the gain weighting function. We need to make sure that the input is always positive, so we will multiply x by negative one, but we also need the output to be negative (because it is a loss) so we multiply the whole function by negative one.
 
           The final graph then looks something like this.
+          
+        </p>
+        <Graph />
+
+        <p>
+          text under graph
         </p>
       </Article>
     );

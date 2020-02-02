@@ -1,5 +1,5 @@
-export function positiveWeighting(p, gamma) {
-  let gamma = gamma || 0.61;
+export function positiveWeighting(p, _gamma) {
+  let gamma = _gamma || 0.61;
 
   const numerator = Math.pow(p, gamma);
   const denominator = Math.pow(numerator + Math.pow(1 - p, gamma), 1 / gamma);
@@ -7,16 +7,16 @@ export function positiveWeighting(p, gamma) {
   return numerator / denominator;
 }
 
-export function negativeWeighting(p, delta) {
-  let delta = delta || 0.69;
+export function negativeWeighting(p, _delta) {
+  let delta = _delta || 0.69;
   const numerator = Math.pow(p, delta);
   const denominator = Math.pow(numerator + Math.pow(1 - p, delta), 1 / delta);
 
   return numerator / denominator;
 }
 
-export function valueFunction(x, lambda, gamma, delta) {
-  let lambda = lambda || 2.25;
+export function valueFunction(x, _lambda, gamma, delta) {
+  let lambda = _lambda || 2.25;
   if (x > 0) {
     return positiveValue(x, gamma);
   } else if (x === 0) {
@@ -26,8 +26,8 @@ export function valueFunction(x, lambda, gamma, delta) {
   }
 }
 
-export function positiveValue(x, alpha) {
-  let alpha = alpha || 0.88;
+export function positiveValue(x, _alpha) {
+  let alpha = _alpha || 0.88;
 
   if (alpha > 0) {
     return Math.pow(x, alpha);
@@ -38,8 +38,8 @@ export function positiveValue(x, alpha) {
   }
 }
 
-export function lossValue(x, beta) {
-  let beta = beta || 0.88;
+export function lossValue(x, _beta) {
+  let beta = _beta || 0.88;
 
   if (beta > 0) {
     return -Math.pow(-x, beta);
