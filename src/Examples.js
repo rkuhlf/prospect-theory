@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Article from "./Article";
+// original article http://www.its.caltech.edu/~camerer/Ec101/ProspectTheory.pdf
 
 class Examples extends Component {
   constructor(props) {
@@ -29,7 +30,14 @@ class Examples extends Component {
 
         <h3 id="allais">Allais Paradox</h3>
         <p>
-          The first real challenge to utility theory and example of how prospect theory accounts for some of its faults comes in the middle of the 1950s. 
+          The first real challenge to utility theory and example of how prospect theory accounts for some of its faults comes in the middle of the 1950s. However, most economists just ignored this clear proof that their model was invalid until much later.
+        </p>
+
+        <h3>Sure Thing Preference</h3>
+        <p>
+          This leads us into the clear preference that humans show for getting an assured result over something that has a risk of failure. For example, would you rather take a 50-50 shot at getting 1,000 dollars, or just take 450 dollars for sure.
+          Utility theory would have you believe that most humans would take the risk, because the utility value is 50 dollars higher.
+          A more interesting example of this bias is the following question: Would you take 2,500 with probability 33 percent, 2,400 with probability 66 percent and 0 with probability 1 percent, or 2,400 with certainty. And another similar question, 2,500 with probability 33 percent and 0 with probability 67 percent, or 2,400 with probability 34 percent and 0 with probability 66 percent.
         </p>
 
         <h3 id="risk">Risk Aversion and Risk Seeking</h3>
@@ -136,6 +144,16 @@ class Examples extends Component {
           </table>
 
         </div>
+
+        <h3 id="allais">Peaked vs Bi-model</h3>
+        <p>
+          One of the more recent experiments that was done to create a better model was a survey where the two options were either a peaked probability curve (with a high probability of getting nothing and low probabilities of either losing or gaining 200 dollars) and a bimodal curve (high probabilities of gaining or losing 200 dollars). Most subjects prefer the peaked option.
+        </p>
+
+        <h3 id="allais">Shifting the Possibilities</h3>
+        <p>
+          Also mentioned in one of the newer papers is question that allows the subject to move one probability bar to one higher choice.
+        </p>
       </Article>
     );
   }
