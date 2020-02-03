@@ -8,17 +8,25 @@ class Graph extends Component {
 
     var calculator = window.Desmos.Calculator(elt, {
       border: false,
-      expressionsCollapsed: true
+      expressionsCollapsed: true,
+      lockViewport: !this.props.allowScroll
     });
-    calculator.setExpression({ id: 0, latex: this.props.func });
+    calculator.setExpression({ 
+      id: 0, 
+      latex: this.props.func
+    });
     if (this.props.bounds) {
       calculator.setMathBounds(this.props.bounds);
     }
   }
 
   render() {
+    let classNames = "my-2 shadow-sm w-100 vh-100";
+    if (this.props.className) {
+      classNames += " " + this.props.className;
+    }
     return (
-      <div id={this.props.id} className="my-2 shadow-sm w-100 vh-100">
+      <div id={this.props.id} className={classNames}>
         
       </div>
     );

@@ -10,32 +10,32 @@ import Graph from "./Graph";
 class Explanation extends Component {
 
   render() {
-    return (
+    return ( // add all scroll links
       <Article title="Explanation" scrollLinks={["Explanation", "Loss Aversion", "Mis-Weighting Probabilities", "Certainty Effect"]} scrollIds={["title", "loss-aversion", "probability-weighting", "certainty-effect"]}>
-        <p>
+        <div>
           Prospect theory is a fairly recently introduced economic model that focuses on accounting for many seemingly illogical human biases, like loss aversion, the certainty effect, and the mis-weighting of probabilities that utility theory (the previous economic model) doesn't consider. 
-        </p>
+        </div>
 
         <h2>Biases</h2>
-        <p>Before we get into the math model, we should consider the problems that prospect theory is trying to solve.</p>
+        <div>Before we get into the math model, we should consider the problems that prospect theory is trying to solve.</div>
         <h3 id="loss-aversion">Loss Aversion</h3>
-        <p>
+        <div>
           Loss aversion is the economic term for the basic idea that people are less likely to take a risk of losing something than they are to take a risk to gain something. Loss aversion can explain the sunk cost fallacy, because once you've invested time into doing something, quitting means that all of that time is "lost."
           {/* write about status quo effect and endowment effect */}
-        </p>
+        </div>
 
         <h3 id="probability-weighting">Mis-Weighting Probabilities</h3>
-        <p>
+        <div>
           The certainty effect is the average person's tendacy to treat probabilities as if they are further from the extreme than they actually are. For example, an individual is likely to treat a 1% probability as a 5% probability and a 99% probability as a 95% probability.
-        </p>
+        </div>
 
         <h3 id="certainty-effect">The Certainty/Possibility Effect</h3>
-        <p>
+        <div>
           The certainty and possibility effects are another example of mis-weighting probabilities. The possibility effect states that an increase in probability from 0% to 5% (making the event possible) will be treated with much more weight than an increase from 45% to 50%. The certainty effect is similar, stating that an increase from 95% to 100% (making it certain) will be treated differently from a change from 50% to 55% (or any other probabilities far from the extremes).
-        </p>
+        </div>
 
         <h3 id="math-model">The Theoretical Model</h3>
-        <p>
+        <div>
           So how does prospect theory attempt to encapsulate all of these human biases into a mathematical model?
           To determine the total prospect value (how good a gamble is percieved as), you would map each probability through a function <Formula tex={`${"\\pi(p)"}`} /> and the possible result of each function through a separate function <Formula tex={`${"v(x)"}`} />.
           Probability weighting biases are accounted for with the pi function which should follow a curve like this. {/* insert a graph */}
@@ -56,39 +56,48 @@ class Explanation extends Component {
           <Formula notInline tex={`${"\\sum_{i=1}^k \\pi^-v(x_i) + \\sum_{i=k+1}^n \\pi^+v(x_i)"}`} />
           However, we're not quite done, because we still need to figure out how our value mapping function should look. Again, humans judge gains differently from losses, so we'll define a function <Formula tex={`${"g(x)"}`} /> for gains and <Formula tex={`${"l(x)"}`} /> for losses. Then our definition of <Formula tex={`${"v"}`} /> becomes 
           <Formula notInline={true} tex={`${'v(x) =\\begin{cases}g(x),  & \\text{if $x$ > 0} \\\\0,  & \\text{if $x$ = 0} \\\\l(x), & \\text{if $x$ < 0}\\end{cases}'}`} />
-        </p>
+        </div>
 
         <h3>The Specifics of the Model</h3>
-        <p>
-          So how do we actually go about calculating the weighted probability and the weighted value? Well, we have some idea what we want our probability graph to look like. {/* Explain biases and what they mean for the graph */ }. Additionally, we'll want to give ourselves the flexibility of weighting negative and positive differently. So it should end up looking something like this. 
-          
-        </p>
-        <Graph bounds={{left: 0, right: 1, bottom: 0, top: 1}} id="probability-function" func="y = x^{0.61} / ((x ^ {0.61} + (1-x) ^ {0.61})^{1/0.61})" />
-        <p>
-          To give us a graph with this shape, we can use the formula 
+        <div>
+          So how do we actually go about calculating the weighted probability and the weighted value? Well, we have some idea what we want our probability graph to look like. It should map an input probability (we'll use the scale from 0 to 1) on the x axis to an output probability (also from 0 to 1) on the y axis. Because of the way we mis-weight probabilities (further from the extreme than they actually are), we'll want to make sure that our graph increases rapidly at the start, is relatively linear through the middle, and increases quickly again at the end. To make it increase quickly then slow down we'll start with the base of a root equation, or taking our input to some number greater than zero but less than one. 
+          <Formula notInline={true} tex={`${'w(p) = p^\\gamma'}`} />
+          In this formula the <Formula  tex={`${"\\gamma"}`} /> (gamma) is a constant that we can adjust to make the formula match human behavior.
+          <Graph bounds={{left: 0, right: 1, bottom: 0, top: 1}} id="probability-function-numerator" func="y = x^{0.61}" />
+          This has the added benefit of already mapping zero to zero and one to one, but we need to make sure it increases rapidly at the end. We can do this by dividing it by some function. We need that function to start off at one, be larger than one in the middle, and decrease back to one when the input is one. We can create this with the following:
+          <Formula notInline={true} tex={`${'p^{\\gamma}+(1-p)^{\\gamma}'}`} />
+          <Graph bounds={{left: 0, right: 1, bottom: 0, top: 2}} id="probability-function-bottom-inside" func="y=x^{0.61}+(1-x)^{0.61}" />
+          And our new function looks like this:
+          <Graph bounds={{left: 0, right: 1, bottom: 0, top: 1}} id="probability-function-almost-finished" func="y=(x^{0.61})/(x^{0.61}+(1-x)^{0.61})" />
+          However, humans don't weight probabilities quite symmetrically, so we want to increase the height of our circular line just a little bit (relative to our constant).
+          <Formula notInline={true} tex={`${'(p^{\\gamma}+(1-p)^{\\gamma})^{1/\\gamma}'}`} />
+          <Graph bounds={{left: 0, right: 1, bottom: 0, top: 2}} id="probability-function-bigger-denominator" func="y=(x^{0.61}+(1-x)^{0.61})^{1/0.61}" />
+          This gives our final function:
+          <Formula notInline tex={`${"w(p) = \\frac{p^\\gamma}{(p^\\gamma + (1-p) ^ \\gamma)^{1/\\gamma}}"}`} /> 
+          <Graph bounds={{left: 0, right: 1, bottom: 0, top: 1}} id="probability-function" func="y = x^{0.61} / ((x ^ {0.61} + (1-x) ^ {0.61})^{1/0.61})" />
+          Additionally, we'll want to give ourselves the flexibility of weighting negative and positive differently, so we'll define two separate functions for positive
           <Formula notInline tex={`${"w^+(p) = \\frac{p^\\gamma}{(p^\\gamma + (1-p) ^ \\gamma)^{1/\\gamma}}"}`} /> 
-          In this formula the <Formula  tex={`${"\\gamma"}`} /> (gamma) is a constant that we can adjust to make the formula match human behavior. We'll want to use a similar formula for losses, but with a different constant variable: <Formula tex={`${"\\delta"}`} /> (delta). 
+          and negative
           <Formula notInline tex={`${"w^-(p) = \\frac{p^\\delta}{(p^\\delta + (1-p) ^ \\delta)^{1/\\delta}}"}`} />
-          {/*explain why this formula works*/}
-        </p>
-        <p>
-          Now we can develop our value mapping function. Increasing value has diminishing returns, so the as the possible gain gets larger and larger, our desire for that gain doesn't grow at quite the same rate and begins to drop off. 
+          the only difference being a different constant variable: <Formula tex={`${"\\delta"}`} /> (delta). 
+        </div>
+        <div>
+          Now we can develop our value mapping function. We'll use another constant variable <Formula tex={`${"\\alpha"}`} /> (alpha) to adjust the model. Increasing value has diminishing returns, so the as the possible gain gets larger and larger, our desire for that gain doesn't grow at quite the same rate and begins to drop off. 
           <Formula notInline tex={`${"g(x) =\\begin{cases} x^\\alpha,  & \\text{if $\\alpha$ > 0} \\\\ ln(x),  & \\text{if $\\alpha$ = 0} \\\\ 1-(1+x)^\\alpha, & \\text{if $\\alpha$ < 0}\\end{cases}"}`} />
+        {/*Display an animated graph*/}
 
           We'll also want to multiply our loss function by a loss aversion constant.
-          <Formula notInline tex={`${"l(x) =\\begin{cases} \\lambda * -(-x)^\\beta,  & \\text{if $\\beta$ > 0} \\\\ \\lambda*-ln(-x),  & \\text{if $\\beta$ = 0} \\\\ \\lambda * [(1-x)^\\beta - 1], & \\text{if $\\beta$ < 0}\\end{cases}"}`} /> We can determine what each of these possible functions are based on the gain weighting function. We need to make sure that the input is always positive, so we will multiply x by negative one, but we also need the output to be negative (because it is a loss) so we multiply the whole function by negative one.
+          <Formula notInline tex={`${"l(x) =\\begin{cases} \\lambda * -(-x)^\\beta,  & \\text{if $\\beta$ > 0} \\\\ \\lambda*-ln(-x),  & \\text{if $\\beta$ = 0} \\\\ \\lambda * [(1-x)^\\beta - 1], & \\text{if $\\beta$ < 0}\\end{cases}"}`} /> 
+          We can determine what each of these possible functions are based on the gain weighting function. We need to make sure that the input is always positive, so we will multiply x by negative one, but we also need the output to be negative (because it is a loss) so we multiply the whole function by negative one.
 
           The final graph then looks something like this.
           
-        </p>
-        <Graph id="gain-value-function" func="g(x) = \{ x > 0: x^{0.88}, x < 0: 2.25 * -(-x)^{0.88}\}"/>
-
-        <p>
-          text under graph
-        </p>
+        </div>
+        <Graph className="mb-3" id="gain-value-function" func="g(x) = \{ x > 0: x^{0.88}, x < 0: 2.25 * -(-x)^{0.88}\}" allowScroll/>
+      {/*Summarize equations at bottom*/}
       </Article>
     );
   }
 }
-// write explanation
+
 export default Explanation;
