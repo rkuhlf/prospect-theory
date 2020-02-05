@@ -8,7 +8,7 @@ import Explanation from './Explanation';
 import TopNav from './TopNav';
 import Footer from './Footer';
 import MetaTags from 'react-meta-tags';
-import './style.scss';
+import './style.scss'; 
 // add support for og metadata tags
 // use this https://www.heymeta.com/url/framer.com
 // add enriched result faq (for explanation) https://developers.google.com/search/docs/data-types/faqpage
@@ -16,7 +16,7 @@ import './style.scss';
 // add enriched result searchbox https://developers.google.com/search/docs/data-types/sitelinks-searchbox
 // add favicon https://support.google.com/webmasters/answer/9290858?hl=en&ref_topic=9456381
 // make mobile friendly
-// make sure to test reindexing before deciding it doesn't work
+// make sure to test reindexing before deciding that meta tags are displaying incorrectly
 
 class App extends Component {
   render() {
