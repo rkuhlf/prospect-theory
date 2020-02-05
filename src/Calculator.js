@@ -119,7 +119,7 @@ class Calculator extends Component {
       showSettings: !prevState.showSettings
     }));
   }
-
+ 
   addResult() {
     this.setState(prevState => {
       let prospects = prevState.prospects;
