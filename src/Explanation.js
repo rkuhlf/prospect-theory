@@ -20,7 +20,7 @@ class Explanation extends Component {
         <div>Before we get into the math model, we should consider the problems that prospect theory is trying to solve.</div>
         <h3 id="loss-aversion">Loss Aversion</h3>
         <div>
-          Loss aversion is the economic term for the basic idea that people are less likely to take a risk of losing something than they are to take a risk to gain something. Loss aversion can explain the sunk cost fallacy, because once you've invested time into doing something, quitting means that all of that time is "lost."
+          Loss aversion is the economic term for the basic idea that people are less likely to take a risk of losing something than they are to take a risk to gain something. Loss aversion can explain the sunk cost fallacy, because once you've invested time into doing something, quitting means that all of that time is "lost." This is also why winning 100 dollars and then losing 80 feels like a net loss, even though you are ahead by 20 dollars.
           {/* write about status quo effect and endowment effect */}
         </div>
 
