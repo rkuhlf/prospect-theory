@@ -10,7 +10,7 @@ import Footer from './Footer';
 import MetaTags from 'react-meta-tags';
 import './style.scss'; 
 // add support for og metadata tags
-// use this https://www.heymeta.com/url/framer.com
+// use this https://www.heymeta.com/url/framer.com https://www.flaticon.com/free-icon/save-money_1611261
 // add enriched result faq (for explanation) https://developers.google.com/search/docs/data-types/faqpage
 // add enriched result for text to speech https://developers.google.com/search/docs/data-types/speakable
 // add enriched result searchbox https://developers.google.com/search/docs/data-types/sitelinks-searchbox
@@ -19,6 +19,16 @@ import './style.scss';
 // make sure to test reindexing before deciding that meta tags are displaying incorrectly
 
 class App extends Component {
+  metaTags() {
+    return (
+      <MetaTags>
+                <title>Examples of Prospect Theory Applied</title>
+                <meta id="meta-description" name="description" content={exampleDescription} />
+              </MetaTags>
+              <p className="d-none">{exampleDescription}</p>
+    );
+  }
+
   render() {
     const exampleDescription = "Examples of prospect theory stretching from the first problems with utility theory and Allais all the way to modern decision making.";
     const explanationDescription = "A detailed explanation of prospect theory's history, the biases it tries to account for, and the math behind it all.";
