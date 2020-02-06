@@ -142,7 +142,43 @@ class Examples extends Component {
               
             </tbody>
           </table>
-
+          
+          <div>
+            To give an example, {/*
+              1. A.80 % chance to win $1000.
+              B.$700
+              for sure
+              
+              This choice is framed in terms of high chance of significant gains.Most people will favor risk aversion.Most choose B.However, the mathematical expected value of A is $800(80 % x $1000).An“ econ” would choose A.
+              
+              2. A.80 % chance to lose $1000(and 20 % chance of losing nothing).
+              B.Lose $700
+              for sure.
+              
+              This is framed in terms high risk of significant loss.Most would favors risk seeking.Most take A.However the expected value of A is to lose $800(-$1000 x 80 % ).B is the better economical choice.
+            */}
+          
+          </div>
+        </div>
+        
+        <h3>Lottery Problem</h3>
+        <div>
+          {/*
+          A.Bet $10 on a .1 % chance to win $9, 000.
+          B.Do nothing.
+          
+          This scenario is framed in terms of small chance
+          for significant gain.Many will favor risk seeking and choose A.The economical choice is B because the expected value of A.is to lose $1([.1 % x $9, 000] - $10).
+          */}
+        </div>
+        
+        <h3>Insurance</h3>
+        <div>
+          {/*
+            4. A.1 % chance to lose $100, 000.
+            B.Pay $1, 100
+            for insurance against a 1 % chance to lose $100, 000.
+          */}
         </div>
 
         <h3 id="allais">Peaked vs Bi-model</h3>
