@@ -29,8 +29,8 @@ class App extends Component {
           <title>Examples of Prospect Theory Applied</title>
           <meta id="meta-description" name="description" content={description} />
           <meta name="keywords" content="Economics,Prospect Theory,Utility Theory" />
-            <meta name="author" content="Riley Kuhlman" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <meta name="author" content="Riley Kuhlman" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
           <meta itemProp="name" content={title} />
           <meta itemProp="description" content={description} />

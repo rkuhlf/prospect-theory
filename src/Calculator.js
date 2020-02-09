@@ -444,12 +444,12 @@ class Calculator extends Component {
 
         <h3  id="weighted-probability-explanation" className={classNames(this.state.cssShowOnBigScreens)}>Weighted Probability</h3>
         <p>
-          This is the way that the model, and hopefully your mind, view the probability. It is weighted to conform to several known human biases.
+          This is the way that the model, and hopefully your mind, view the probability. It is weighted to conform to several known human biases. It goes from zero to one.
         </p>
 
         <h3  id="weighted-value-explanation" className={classNames(this.state.cssShowOnBigScreens)}>Weighted Value</h3>
         <p>
-          This is the way that the model, and hopefully your mind, view the value. It is weighted to conform to several known human biases and better follow the way humans view money (or anything else).
+          This is the way that the model, and hopefully your mind, view the value. It is weighted to conform to several known human biases and better follow the way humans view money (or anything else). 
         </p>
 
         <h3 id="prospect-value-explanation">Prospect Value</h3>
