@@ -15,14 +15,14 @@ export function negativeWeighting(p, _delta) {
   return numerator / denominator;
 }
 
-export function valueFunction(x, _lambda, gamma, delta) {
+export function valueFunction(x, _lambda, alpha, beta) {
   let lambda = _lambda || 2.25;
   if (x > 0) {
-    return positiveValue(x, gamma);
+    return positiveValue(x, alpha);
   } else if (x === 0) {
     return 0;
   } else {
-    return lambda * lossValue(x, delta); // calling this function might not work
+    return lambda * lossValue(x, beta); // calling this function might not work
   }
 }
 

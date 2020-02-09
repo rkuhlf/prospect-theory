@@ -237,7 +237,7 @@ class Calculator extends Component {
     let totalProspect = 0;
     let totalUtility = 0;
     for (let i = 0; i < prospects.length; i++) {
-      prospects[i].weightedValue = valueFunction(prospects[i].result, this.state.lossAversion, this.state.gainProbabilityWeighting, this.state.lossProbabilityWeighting);
+      prospects[i].weightedValue = valueFunction(prospects[i].result, this.state.lossAversion, this.state.gainPower, this.state.lossPower);
       prospects[i].weightedsMultiplied =
         prospects[i].weightedProbability * prospects[i].weightedValue;
       prospects[i].utility =

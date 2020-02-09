@@ -9,14 +9,17 @@ import TopNav from './TopNav';
 import Footer from './Footer';
 import MetaTags from 'react-meta-tags';
 import './style.scss'; 
-// add support for og metadata tags
-// use this https://www.heymeta.com/url/framer.com https://svgshare.com/i/HqN.svg
 // add enriched result faq (for explanation) https://developers.google.com/search/docs/data-types/faqpage
 // add enriched result for text to speech https://developers.google.com/search/docs/data-types/speakable
 // add enriched result searchbox https://developers.google.com/search/docs/data-types/sitelinks-searchbox
 // add favicon https://support.google.com/webmasters/answer/9290858?hl=en&ref_topic=9456381
 // make mobile friendly
 // make sure to test reindexing before deciding that meta tags are displaying incorrectly
+
+// figure out how to serve the compressed version of the website 
+//optimize based on this webiste https://ready.mobi/#1494450-q6de
+
+// consider adding mentions of other models: weighted utility (Chew), rank-dependent expected utility by John Quiggin, and regret theory
 
 class App extends Component {
   metaTags(title, description) {
@@ -25,10 +28,13 @@ class App extends Component {
         <MetaTags>
           <title>Examples of Prospect Theory Applied</title>
           <meta id="meta-description" name="description" content={description} />
+          <meta name="keywords" content="Economics,Prospect Theory,Utility Theory" />
+            <meta name="author" content="Riley Kuhlman" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-          <meta itemprop="name" content={title} />
-          <meta itemprop="description" content={description} />
-          <meta itemprop="image" content="https://svgshare.com/i/HqN.svg" />
+          <meta itemProp="name" content={title} />
+          <meta itemProp="description" content={description} />
+          <meta itemProp="image" content="https://svgshare.com/i/HqN.svg" />
 
           <meta property="og:url" content="https://www.prospect-theory.herokuapp.com" />
           <meta property="og:type" content="website" />

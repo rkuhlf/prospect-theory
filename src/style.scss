@@ -12,6 +12,10 @@ $body-color: $dark;
 @import "~bootstrap/scss/bootstrap";
 
 
+// * {
+//   font-size: 100% !important;
+// }
+
 .btn-primary {
   color: $light !important;
 }

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Article from "./Article";
+import Choice from "./Choice";
 // original article http://www.its.caltech.edu/~camerer/Ec101/ProspectTheory.pdf
 
 class Examples extends Component {
@@ -29,16 +30,52 @@ class Examples extends Component {
         There are thousands of examples, both hypothetical and real-world, that can be used to compare utility theory to prospect theory and help explain how prospect theory works.
 
         <h3 id="allais">Allais Paradox</h3>
-        <p>
-          The first real challenge to utility theory and example of how prospect theory accounts for some of its faults comes in the middle of the 1950s. However, most economists just ignored this clear proof that their model was invalid until much later.
-        </p>
-
-        <h3>Sure Thing Preference</h3>
-        <p>
-          This leads us into the clear preference that humans show for getting an assured result over something that has a risk of failure. For example, would you rather take a 50-50 shot at getting 1,000 dollars, or just take 450 dollars for sure.
-          Utility theory would have you believe that most humans would take the risk, because the utility value is 50 dollars higher.
-          A more interesting example of this bias is the following question: Would you take 2,500 with probability 33 percent, 2,400 with probability 66 percent and 0 with probability 1 percent, or 2,400 with certainty. And another similar question, 2,500 with probability 33 percent and 0 with probability 67 percent, or 2,400 with probability 34 percent and 0 with probability 66 percent.
-        </p>
+        <div>
+          The first real challenge to utility theory and example of how prospect theory accounts for some of its faults comes in the middle of the 1950s. He proposed the following questions:
+          <Choice options={{
+            "Option 1": {
+              "100%": "One million dollars"
+            },
+            "Option 2": {
+              "89%": "One million dollars",
+              "1%": "Nothing",
+              "10%": "Five million dollars",
+            }
+          }}/>
+          and 
+          <Choice options={{
+            "Option 1": {
+              "89%": "Nothing",
+              "11%": "One million"
+            },
+            "Option 2": {
+              "10%": "Five million dollars",
+              "90%": "Nothing",
+            }
+          }}/>
+          On average, people prefer the first option of the first question and the second option in the second question. However, because in the first question both options have an 89% chance to win one million dollars, that shouldn't affect your choice and we can cancel it out.
+          <Choice options={{
+            "Option 1": {
+              "11%": "One million dollars"
+            },
+            "Option 2": {
+              "1%": "Nothing",
+              "10%": "Five million dollars",
+            }
+          }}/>
+          Similarly, for the second question both options have an 89% chance of nothing happening, so we can cancel that out as well.
+          <Choice options={{
+            "Option 1": {
+              "11%": "One million"
+            },
+            "Option 2": {
+              "10%": "Five million dollars",
+              "1%": "Nothing",
+            }
+          }}/>
+          All of a sudden, we can show that these two questions are exactly the same. This invalidates the independence axiom (one of the assumptions of utility theory; that all decisions are made independently with the same objectives in mind) and should make you question what you really wanted when you were making your choice, because it doesn't seem to make any sense to choose the first option one time and the second option another time when the options don't change at all. However, most economists just ignored this clear proof that their model was invalid until much later.
+        {/*Give link to video: https://www.youtube.com/watch?v=c26wIhnDK9Q*/}
+        </div>
 
         <h3 id="risk">Risk Aversion and Risk Seeking</h3>
         <div>
@@ -160,16 +197,37 @@ class Examples extends Component {
           
           </div>
         </div>
-        
+
         <h3>Lottery Problem</h3>
         <div>
-          {/*
-          A.Bet $10 on a .1 % chance to win $9, 000.
-          B.Do nothing.
-          
-          This scenario is framed in terms of small chance
-          for significant gain.Many will favor risk seeking and choose A.The economical choice is B because the expected value of A.is to lose $1([.1 % x $9, 000] - $10).
-          */}
+          One of the simplest examples that demonstrates why prospect value works better than utility value is a lottery bet. For example, given the following decision,
+          <Choice options={{
+            "Bet 10 dollars": {
+              "0.1%": "9000",
+              "99.9%": "0"
+            },
+            "Do Nothing": {
+        
+            }
+            }} />
+          utility theory would predict that nobody takes the bet, because the expected utility value is losing one dollar. However, thousands of people buy lottery tickets every day. Why is that? We can classify this behavior as risk seeking, because the scenario is framed in terms of a small chance for gain. Remember the chart that we just looked at? Because it is a small chance of a gain, prospect theory models that humans on average will overweight it, and choose it disproportionately than utility theory predicts. Indeed, prospect theory gives this decision a value of around 44. However, if you frame the problem differently, by thinking of the money spent as lost rather than an investment
+          <Choice options={{
+            "Gamble": {
+              "0.1%": "8991",
+              "99.9%": "-9"
+            },
+            "Do Nothing": {
+        
+            }
+            }} />
+            the prospect value is much closer to zero, at around 28. This is why how the gamble is framed is very important to the companies offering it, and why many people lose money trying to win big.
+        </div>
+
+        <h3>Sure Thing Preference</h3>
+        <div>
+          This leads us into the clear preference that humans show for getting an assured result over something that has a risk of failure. For example, would you rather take a 50-50 shot at getting 1,000 dollars, or just take 450 dollars for sure.
+          Utility theory would have you believe that most humans would take the risk, because the utility value is 50 dollars higher.
+          A more interesting example of this bias is the following question: Would you take 2,500 with probability 33 percent, 2,400 with probability 66 percent and 0 with probability 1 percent, or 2,400 with certainty. And another similar question, 2,500 with probability 33 percent and 0 with probability 67 percent, or 2,400 with probability 34 percent and 0 with probability 66 percent.
         </div>
         
         <h3>Insurance</h3>
@@ -182,22 +240,17 @@ class Examples extends Component {
         </div>
 
         <h3 id="allais">Peaked vs Bi-model</h3>
-        <p>
+        <div>
           One of the more recent experiments that was done to create a better model was a survey where the two options were either a peaked probability curve (with a high probability of getting nothing and low probabilities of either losing or gaining 200 dollars) and a bimodal curve (high probabilities of gaining or losing 200 dollars). Most subjects prefer the peaked option.
-        </p>
+        </div>
 
         <h3 id="allais">Shifting the Possibilities</h3>
-        <p>
+        <div>
           Also mentioned in one of the newer papers is question that allows the subject to move one probability bar to one higher choice.
-        </p>
+        </div>
       </Article>
     );
   }
 }
-
-// Talk about allais
-// Show the table with four squares and risk seeking
-// give example of loss aversion
-// show graph that accounts for the certainty effect
 
 export default Examples;
