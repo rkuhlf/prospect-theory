@@ -11,12 +11,12 @@ class Explanation extends Component {
 
   render() {
     return ( // add all scroll links
-      <Article title="Explanation" scrollLinks={["Explanation", "Loss Aversion", "Mis-Weighting Probabilities", "Certainty Effect"]} scrollIds={["title", "loss-aversion", "probability-weighting", "certainty-effect"]}>
+      <Article title="Explanation" scrollLinks={["Explanation", "Biases", "Loss Aversion", "Mis-Weighting Probabilities", "Certainty Effect", "Theoretical Model", "Math Specifics"]} scrollIds={["title", "biases", "loss-aversion", "probability-weighting", "certainty-effect", "math-model", "specifics"]}>
         <div>
           Prospect theory is a fairly recently introduced economic model that focuses on accounting for many seemingly illogical human biases, like loss aversion, the certainty effect, and the mis-weighting of probabilities that utility theory (the previous economic model) doesn't consider. 
         </div>
 
-        <h2>Biases</h2>
+        <h2 id="biases">Biases</h2>
         <div>Before we get into the math model, we should consider the problems that prospect theory is trying to solve.</div>
         <h3 id="loss-aversion">Loss Aversion</h3>
         <div>
@@ -34,7 +34,7 @@ class Explanation extends Component {
           The certainty and possibility effects are another example of mis-weighting probabilities. The possibility effect states that an increase in probability from 0% to 5% (making the event possible) will be treated with much more weight than an increase from 45% to 50%. The certainty effect is similar, stating that an increase from 95% to 100% (making it certain) will be treated differently from a change from 50% to 55% (or any other probabilities far from the extremes).
         </div>
 
-        <h3 id="math-model">The Theoretical Model</h3>
+        <h2 id="math-model">The Theoretical Model</h2>
         <div>
           So how does prospect theory attempt to encapsulate all of these human biases into a mathematical model?
           To determine the total prospect value (how good a gamble is percieved as), you would map each probability through a function <Formula tex={`${"\\pi(p)"}`} /> and the possible result of each function through a separate function <Formula tex={`${"v(x)"}`} />.
@@ -58,7 +58,7 @@ class Explanation extends Component {
           <Formula notInline={true} tex={`${'v(x) =\\begin{cases}g(x),  & \\text{if $x$ > 0} \\\\0,  & \\text{if $x$ = 0} \\\\l(x), & \\text{if $x$ < 0}\\end{cases}'}`} />
         </div>
 
-        <h3>The Specifics of the Model</h3>
+        <h3 id="specifics">The Specifics of the Model</h3>
         <div>
           So how do we actually go about calculating the weighted probability and the weighted value? Well, we have some idea what we want our probability graph to look like. It should map an input probability (we'll use the scale from 0 to 1) on the x axis to an output probability (also from 0 to 1) on the y axis. Because of the way we mis-weight probabilities (further from the extreme than they actually are), we'll want to make sure that our graph increases rapidly at the start, is relatively linear through the middle, and increases quickly again at the end. To make it increase quickly then slow down we'll start with the base of a root equation, or taking our input to some number greater than zero but less than one. 
           <Formula notInline={true} tex={`${'w(p) = p^\\gamma'}`} />

@@ -50,9 +50,6 @@ $body-color: $dark;
 	display: none !important;
 }
 
-// .dcg-exppanel-outer {
-// 	display: none !important;
-// 	height: 0 !important;
-// 	width: 0 !important;
-// 	position: static !important;
-// }
+.almost-full-height {
+  height: calc(100% - 10vh);
+}

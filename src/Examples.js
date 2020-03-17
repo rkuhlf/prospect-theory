@@ -26,7 +26,7 @@ class Examples extends Component {
 
   render() {
     return (
-      <Article title="Examples" scrollLinks={["Examples"]} scrollIds={["title"]}>
+      <Article title="Examples" scrollLinks={["Examples", "Allais", "Risk", "Lottery", "Insurance", "Sure Thing"]} scrollIds={["title", "allais", "risk", "lottery", "insurance", "certainty"]}>
         There are thousands of examples, both hypothetical and real-world, that can be used to compare utility theory to prospect theory and help explain how prospect theory works.
 
         <h3 id="allais">Allais Paradox</h3>
@@ -181,26 +181,36 @@ class Examples extends Component {
           </table>
           
           <div>
-            To give an example, {/*
-              1. A.80 % chance to win $1000.
-              B.$700
-              for sure
-              
-              This choice is framed in terms of high chance of significant gains.Most people will favor risk aversion.Most choose B.However, the mathematical expected value of A is $800(80 % x $1000).An“ econ” would choose A.
-              
-              2. A.80 % chance to lose $1000(and 20 % chance of losing nothing).
-              B.Lose $700
-              for sure.
-              
-              This is framed in terms high risk of significant loss.Most would favors risk seeking.Most take A.However the expected value of A is to lose $800(-$1000 x 80 % ).B is the better economical choice.
-            */}
+            To give an example, 
+
+            <Choice options={{
+              "Option 1": {
+                "80%": "1000"
+              },
+              "Option 2": {
+                "100%": '700'
+              }
+              }} />
+
+            This choice is framed in terms of high chance of significant gains, so most people will be risk averse and go for the sure thing. However, the utility expected value is higher for option 1, at 800 (80 % x $1000) vs 700.
+
+            <Choice options={{
+              "Option 1": {
+                "80%": "Lose 1000"
+              },
+              "Option 2": {
+                "100%": 'Lose 700'
+              }
+              }} />
+
+            This is framed as a high risk of loss, so most people are risk seeking, which means they take option 1. However the utility value of option 2 is to lose 800 ($1000 x 80%), 100 dollars more than option 2.
           
           </div>
         </div>
 
-        <h3>Lottery Problem</h3>
+        <h3 id="lottery">Lottery Problem</h3>
         <div>
-          One of the simplest examples that demonstrates why prospect value works better than utility value is a lottery bet. For example, given the following decision,
+          One of the simplest examples that demonstrates why prospect value is more accurate than utility value can be taken from the real world: a lottery bet. For example, given the following decision,
           <Choice options={{
             "Bet 10 dollars": {
               "0.1%": "9000",
@@ -210,7 +220,7 @@ class Examples extends Component {
         
             }
             }} />
-          utility theory would predict that nobody takes the bet, because the expected utility value is losing one dollar. However, thousands of people buy lottery tickets every day. Why is that? We can classify this behavior as risk seeking, because the scenario is framed in terms of a small chance for gain. Remember the chart that we just looked at? Because it is a small chance of a gain, prospect theory models that humans on average will overweight it, and choose it disproportionately than utility theory predicts. Indeed, prospect theory gives this decision a value of around 44. However, if you frame the problem differently, by thinking of the money spent as lost rather than an investment
+          Utility theory would predict that nobody takes the bet, because the expected utility value is losing one dollar. However, thousands of people buy lottery tickets every day. Why is that? We can classify this behavior as risk seeking, because the scenario is framed in terms of a small chance for gain. Remember the chart that we just looked at? Because it is a small chance of a gain, prospect theory models that humans on average will overweight it, and choose it disproportionately than utility theory predicts. Indeed, prospect theory gives this decision a value of around 44. However, if you frame the problem differently, by thinking of the money spent as lost rather than an investment
           <Choice options={{
             "Gamble": {
               "0.1%": "8991",
@@ -222,24 +232,34 @@ class Examples extends Component {
             }} />
             the prospect value is much closer to zero, at around 28. This is why how the gamble is framed is very important to the companies offering it, and why many people lose money trying to win big.
         </div>
-
-        <h3>Sure Thing Preference</h3>
-        <div>
-          This leads us into the clear preference that humans show for getting an assured result over something that has a risk of failure. For example, would you rather take a 50-50 shot at getting 1,000 dollars, or just take 450 dollars for sure.
-          Utility theory would have you believe that most humans would take the risk, because the utility value is 50 dollars higher.
-          A more interesting example of this bias is the following question: Would you take 2,500 with probability 33 percent, 2,400 with probability 66 percent and 0 with probability 1 percent, or 2,400 with certainty. And another similar question, 2,500 with probability 33 percent and 0 with probability 67 percent, or 2,400 with probability 34 percent and 0 with probability 66 percent.
-        </div>
         
-        <h3>Insurance</h3>
+        <h3 id="insurance">Insurance</h3>
         <div>
           {/*
             4. A.1 % chance to lose $100, 000.
             B.Pay $1, 100
             for insurance against a 1 % chance to lose $100, 000.
           */}
+        Another real world application of this model is in insurance. Insurance companies understand that people are risk averse when faced with the possibility of a significant loss, no matter how small the probability is. For example, say that everyday you have to make this choice, 
+        <Choice options={{
+          "Pay Insurance": {
+            "100%": "Lose 1,100",
+          },
+          "No Insurance": {
+            "1%": "Lose 100,000"
+          }
+          }} />
+          Most people end up paying for the insurance, because most people are risk averse. Even though mathematically you are predicted to only lose on average 1,000 dollars a day without insurance, many people can't afford to take that risk, because a couple of bad losses in a row could destroy their lives.
         </div>
 
-        <h3 id="allais">Peaked vs Bi-model</h3>
+        <h3 id="certainty">Sure Thing Preference</h3>
+        <div>
+          The final example deals with the clear preference that humans show for getting an assured result over something that has a risk of failure (kind of like insurance). For example, would you rather take a 50-50 shot at getting 1,000 dollars, or just take 450 dollars for sure.
+          Utility theory would have you believe that most humans would take the risk, because the utility value is 50 dollars higher.
+          A more interesting example of this bias is the following question: Would you take 2,500 with probability 33 percent, 2,400 with probability 66 percent and 0 with probability 1 percent, or 2,400 with certainty. And another similar question, 2,500 with probability 33 percent and 0 with probability 67 percent, or 2,400 with probability 34 percent and 0 with probability 66 percent.
+        </div>
+
+        {/*<h3 id="allais">Peaked vs Bi-model</h3>
         <div>
           One of the more recent experiments that was done to create a better model was a survey where the two options were either a peaked probability curve (with a high probability of getting nothing and low probabilities of either losing or gaining 200 dollars) and a bimodal curve (high probabilities of gaining or losing 200 dollars). Most subjects prefer the peaked option.
         </div>
@@ -247,7 +267,7 @@ class Examples extends Component {
         <h3 id="allais">Shifting the Possibilities</h3>
         <div>
           Also mentioned in one of the newer papers is question that allows the subject to move one probability bar to one higher choice.
-        </div>
+        </div>*/}
       </Article>
     );
   }
