@@ -16,6 +16,14 @@ $body-color: $dark;
 //   font-size: 100% !important;
 // }
 
+.scroll-horizontal-auto { 
+  overflow-x: auto !important;
+}
+
+.overflow-horizontal-hidden { 
+  overflow-x: hidden !important;
+}
+
 .btn-primary {
   color: $light !important;
 }
@@ -35,21 +43,15 @@ $body-color: $dark;
 	height: 50vh;
 }
 
-
-.dcg-exppanel-container {
-	// display: none;
-	// height: 0 !important;
-	// transform: translate(0, 100%) !important;
-}
-
-.dcg-graph-outer {
-
-}
-
 .dcg-overgraph-icon-container {
 	display: none !important;
 }
 
 .almost-full-height {
   height: calc(100% - 10vh);
+}
+
+.MJXp-display {
+  width: 100%;
+  overflow-x: auto;
 }
