@@ -7,7 +7,7 @@
     "bootstrap": "4.4.1",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
-    "jquery": "3.4.1",
+    "jquery": "3.5.0",
     "node-sass": "4.13.1",
     "popper.js": "1.16.1",
     "prop-types": "15.7.2",
