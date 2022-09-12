@@ -8,4 +8,4 @@ The app is deployed with Heroku.
 
 Contributions, especially grammatical corrections, are certainly welcome. The website is largely finished, but some polishing could certainly help.
 
-[View the current version online](http://prospect-theory.herokuapp.com)
+[View the current version online](https://prospecttheory.vercel.app/)
