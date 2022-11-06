@@ -13,9 +13,9 @@ class Home extends Component {
         <p className="text-center p-4">Prospect Theory: An innovative idea idea applying the psychologically obvious principle that humans aren't always rational to the very rational world of economics.</p>
         <div className="container-fluid mb-5">
           <div className="row">
-            <GoToCard imgURL="https://svgshare.com/i/HaL.svg" linkTo="/explanation" cardTitle="Explanation">Gain an improved understanding of the ideas of prospect theory.</GoToCard>
-            <GoToCard imgURL="https://svgshare.com/i/H_M.svg" linkTo="/examples" cardTitle="Examples">View hypothetical and realistic applications of prospect theory.</GoToCard>
-            <GoToCard imgURL="https://svgshare.com/i/Ha9.svg" linkTo="/calculator" cardTitle="Calculator">Use a calculator to compare prospect theory to utility theory.</GoToCard>
+            <GoToCard imgURL="https://res.cloudinary.com/dymfw7qfi/image/upload/v1667742275/pic1.svg" linkTo="/explanation" cardTitle="Explanation">Gain an improved understanding of the ideas of prospect theory.</GoToCard>
+            <GoToCard imgURL="https://res.cloudinary.com/dymfw7qfi/image/upload/v1667742275/pic2.svg" linkTo="/examples" cardTitle="Examples">View hypothetical and realistic applications of prospect theory.</GoToCard>
+            <GoToCard imgURL="https://res.cloudinary.com/dymfw7qfi/image/upload/v1667742275/pic3.svg" linkTo="/calculator" cardTitle="Calculator">Use a calculator to compare prospect theory to utility theory.</GoToCard>
           </div>
         </div>
       </div>
